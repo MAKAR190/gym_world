@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+.expo/
+web-build/
+.vscode/
+.gitignore
+.prettierrc
+.eslintrc.js
+.prettierignore
