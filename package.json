@@ -2,6 +2,7 @@
   "name": "gym_world",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -13,6 +14,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
     "@rneui/themed": "^4.0.0-rc.8",
+    "@sentry/react-native": "^6.3.0",
     "@supabase/supabase-js": "^2.49.1",
     "ethers": "^6.13.5",
     "expo": "~52.0.39",
@@ -27,13 +29,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@react-native-community/eslint-config": "^3.2.0",
     "@types/react": "~18.3.12",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "eslint": "^9.22.0",
-    "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-native": "^5.0.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "typescript": "^5.3.3"
   },
   "private": true

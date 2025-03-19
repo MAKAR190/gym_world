@@ -24,6 +24,16 @@
     "web": {
       "favicon": "./app/client/assets/favicon.png",
       "bundler": "metro"
-    }
+    },
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "student-9tl"
+        }
+      ]
+    ]
   }
 }
