@@ -31,7 +31,7 @@ jobs:
         run: npm install
 
       - name: Run ESLint
-        run: npm run lint
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
   expo-test:
     name: Test Expo Deployment
@@ -58,20 +58,4 @@ jobs:
         run: npm install
 
       - name: Validate Expo Project
-        run: npx expo doctor
-
-  rebase-check:
-    name: Check for Rebase Necessity
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set up Git
-        run: git fetch --all
-
-      - name: Check for Conflicts with Main
-        run: |
-          git checkout ${{ github.event.pull_request.head.ref }}
-          git merge --no-commit --no-ff origin/main || echo "Conflicts found with main branch"
+        run: npx expo-doctor
