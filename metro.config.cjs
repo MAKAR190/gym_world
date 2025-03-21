@@ -1,7 +1,7 @@
-const { withNativeWind } = require("nativewind/metro");
-const {
+import { withNativeWind } from "nativewind/metro";
+import {
   getSentryExpoConfig
-} = require("@sentry/react-native/metro");
+} from "@sentry/react-native/metro";
 
 const config = getSentryExpoConfig(__dirname);
 

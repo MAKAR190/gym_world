@@ -16,6 +16,7 @@ const eslintConfig = [
     plugins: {
       "unused-imports": eslintPluginUnusedImports,
     },
+    ignores: ["node_modules", "dist", "build", ".expo", "web-build", ".vscode", ".gitignore", ".prettierrc", ".eslintrc.js"],
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
