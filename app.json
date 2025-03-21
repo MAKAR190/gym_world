@@ -25,6 +25,11 @@
       "favicon": "./app/client/assets/favicon.png",
       "bundler": "metro"
     },
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    },
     "plugins": [
       [
         "@sentry/react-native/expo",
