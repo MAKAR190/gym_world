@@ -59,3 +59,45 @@ jobs:
 
       - name: Validate Expo Project
         run: npx expo-doctor
+
+  sentry-release:
+    name: Create Sentry Release
+    runs-on: ubuntu-latest
+    needs: [eslint, expo-test]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Sentry CLI
+        run: npm install -g @sentry/cli
+
+      - name: Authenticate with Sentry
+        run: sentry-cli login
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+      - name: Create Release in Sentry
+        run: |
+          export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}-$(date +%Y%m%d%H%M%S)"
+          sentry-cli releases new $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE
+          sentry-cli releases finalize $SENTRY_RELEASE
+
+      - name: Upload Source Maps (Optional, if using JS/TS with sourcemaps)
+        run: |
+          sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps ./build --url-prefix '~/static/js' --validate
+        if: success()
+
+      - name: Notify Sentry of New Deployment
+        run: |
+          sentry-cli releases deploys $SENTRY_RELEASE new -e production
+        if: success()
