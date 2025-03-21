@@ -1,7 +1,6 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
-import eslintPluginUnusedImports from "eslint-plugin-unused-imports";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,9 +12,7 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("@react-native-community"),
   {
-    plugins: {
-      "unused-imports": eslintPluginUnusedImports,
-    },
+    plugins: ["unused-imports"],
     ignores: [
       "node_modules",
       "dist",
