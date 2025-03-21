@@ -16,9 +16,20 @@ const eslintConfig = [
     plugins: {
       "unused-imports": eslintPluginUnusedImports,
     },
-    ignores: ["node_modules", "dist", "build", ".expo", "web-build", ".vscode", ".gitignore", ".prettierrc", ".eslintrc.js"],
+    ignores: [
+      "node_modules",
+      "dist",
+      "build",
+      ".expo",
+      "web-build",
+      ".vscode",
+      ".gitignore",
+      ".prettierrc",
+      ".eslintrc.js",
+    ],
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/func-call-spacing": ["error", "never"],
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
