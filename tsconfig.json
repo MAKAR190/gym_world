@@ -24,7 +24,7 @@
   "exclude": [
     "node_modules",
     "babel.config.js",
-    "metro.config.mjs"
+    "metro.config.js"
   ],
   "include": [
     "**/*.ts",

@@ -2,7 +2,6 @@
   "name": "gym_world",
   "version": "1.0.0",
   "main": "index.ts",
-  "type": "module",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -31,8 +30,8 @@
     "@babel/core": "^7.25.2",
     "@react-native-community/eslint-config": "^3.2.0",
     "@types/react": "~18.3.12",
-    "@typescript-eslint/eslint-plugin": "^8.27.0",
-    "@typescript-eslint/parser": "^8.27.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
     "eslint": "^9.22.0",
     "eslint-plugin-ft-flow": "^3.0.11",
     "eslint-plugin-jest": "^28.11.0",
