@@ -4,10 +4,17 @@ import * as Sentry from "@sentry/react-native";
 import "./global.css";
 
 Sentry.init({
-  dsn: "https://d3f80e0055f4d9ef660da8b139676b87@o4509006633893888.ingest.de.sentry.io/4509006638153808",
+  dsn: process.env.SENTRY_DSN,
   sendDefaultPii: true,
   tracesSampleRate: 1.0,
   profilesSampleRate: 1.0,
+  integrations: [Sentry.mobileReplayIntegration()],
+});
+
+Sentry.mobileReplayIntegration({
+  maskAllText: true,
+  maskAllImages: true,
+  maskAllVectors: true,
 });
 
 function App() {
