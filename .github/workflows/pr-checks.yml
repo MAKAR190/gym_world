@@ -84,13 +84,11 @@ jobs:
         run: |
           export SENTRY_LOG_LEVEL=debug
           export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}"
-          sentry-cli releases new $SENTRY_RELEASE --org $SENTRY_ORG_SLUG --project $SENTRY_PROJECT_SLUG
-          sentry-cli releases set-commits --auto $SENTRY_RELEASE --org $SENTRY_ORG_SLUG --project $SENTRY_PROJECT_SLUG
-          sentry-cli releases finalize $SENTRY_RELEASE --org $SENTRY_ORG_SLUG --project $SENTRY_PROJECT_SLUG
+          sentry-cli releases new $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
+          sentry-cli releases finalize $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
-          SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
           SENTRY_LOG_LEVEL: debug
 
       - name: Upload Source Maps (Optional, if using JS/TS with sourcemaps)
