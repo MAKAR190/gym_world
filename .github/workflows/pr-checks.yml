@@ -104,10 +104,10 @@ jobs:
 
       - name: Notify Sentry of New Deployment
         run: |
-          sentry-cli releases deploys $SENTRY_RELEASE new -e production --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
+          sentry-cli releases deploys $SENTRY_RELEASE new -e production --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }} --release $SENTRY_RELEASE
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
           SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
-          SENTRY_RELEASE: ${{ steps.set-sentry-release.outputs.sentry-release }}
+          SENTRY_RELEASE: ${{ secrets.SENTRY_RELEASE }}
         if: success()
