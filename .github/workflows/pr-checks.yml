@@ -109,4 +109,5 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
           SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
+          SENTRY_RELEASE: ${{ steps.set-sentry-release.outputs.sentry-release }}
         if: success()
