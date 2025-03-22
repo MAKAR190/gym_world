@@ -95,6 +95,7 @@ jobs:
 
       - name: Upload Source Maps (Optional, if using JS/TS with sourcemaps)
         run: |
+          export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}"
           sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps ./build --url-prefix '~/static/js' --validate --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -104,6 +105,7 @@ jobs:
 
       - name: Notify Sentry of New Deployment
         run: |
+           export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}"
            sentry-cli releases deploys $SENTRY_RELEASE new -e production --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }} --release $SENTRY_RELEASE
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
