@@ -88,6 +88,7 @@ jobs:
           sentry-cli releases set-commits --auto $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
           sentry-cli releases finalize $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
         env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
           SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
           ENTRY_LOG_LEVEL: debug
@@ -96,6 +97,7 @@ jobs:
         run: |
           sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps ./build --url-prefix '~/static/js' --validate --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
         env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
           SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
         if: success()
@@ -104,6 +106,7 @@ jobs:
         run: |
           sentry-cli releases deploys $SENTRY_RELEASE new -e production --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
         env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
           SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
         if: success()
