@@ -64,6 +64,7 @@ jobs:
     name: Create Sentry Release
     runs-on: ubuntu-latest
     needs: [eslint, expo-test]
+    environment: pr-checks
 
     steps:
       - name: Checkout Code
@@ -80,24 +81,34 @@ jobs:
       - name: Install Sentry CLI
         run: npm install -g @sentry/cli
 
-      - name: Authenticate with Sentry
-        run: sentry-cli login
+      - name: Set Debug Log Level for Sentry CLI
+        run: |
+          export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}"
+          sentry-cli releases new $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
+          sentry-cli releases finalize $SENTRY_RELEASE --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-
-      - name: Create Release in Sentry
-        run: |
-          export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}-$(date +%Y%m%d%H%M%S)"
-          sentry-cli releases new $SENTRY_RELEASE
-          sentry-cli releases set-commits --auto $SENTRY_RELEASE
-          sentry-cli releases finalize $SENTRY_RELEASE
+          SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
+          SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
+          ENTRY_LOG_LEVEL: debug
 
       - name: Upload Source Maps (Optional, if using JS/TS with sourcemaps)
         run: |
-          sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps ./build --url-prefix '~/static/js' --validate
+          export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}"
+          sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps ./build --url-prefix '~/static/js' --validate --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
+          SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
         if: success()
 
       - name: Notify Sentry of New Deployment
         run: |
-          sentry-cli releases deploys $SENTRY_RELEASE new -e production
+           export SENTRY_RELEASE="pr-${{ github.event.pull_request.number }}"
+           sentry-cli releases deploys $SENTRY_RELEASE new -e production --org ${{ secrets.SENTRY_ORG_SLUG }} --project ${{ secrets.SENTRY_PROJECT_SLUG }} --release $SENTRY_RELEASE
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG_SLUG: ${{ secrets.SENTRY_ORG_SLUG }}
+          SENTRY_PROJECT_SLUG: ${{ secrets.SENTRY_PROJECT_SLUG }}
         if: success()
