@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "gym_world",
+    "name": "Gym World",
     "slug": "gym_world",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/client/assets/icon.png",
+    "icon": "./app/client/assets/logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./app/client/assets/splash-icon.png",
+      "image": "./app/client/assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./app/client/assets/adaptive-icon.png",
+        "foregroundImage": "./app/client/assets/logo.png",
         "backgroundColor": "#ffffff"
       }
     },

@@ -54,6 +54,8 @@ module.exports = [
       "unused-imports/no-unused-imports": "error",
       "@typescript-eslint/func-call-spacing": "off",
       "prettier/prettier": "off",
+      "react-native/no-inline-styles": "off",
+      "curly": "off",
     },
   },
 ];
