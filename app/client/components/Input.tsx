@@ -1,13 +1,25 @@
 import React from "react";
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
 import { View, TextInput, Text, KeyboardTypeOptions } from "react-native";
-import Label from "@/client/components/Label";
-import { ExpoIconComponent } from "@/types/ExpoIcon";
+import { IconType } from "@/types/Icon";
+import Label from "./Label";
 
-type AutoCompleteType =  "email" | "username" | "current-password" | "new-password" | "one-time-code" | "tel" | "postal-code" | "street-address" | "address-line1" | "address-line2" | "country" | "name";
+type AutoCompleteType =
+  | "email"
+  | "username"
+  | "current-password"
+  | "new-password"
+  | "one-time-code"
+  | "tel"
+  | "postal-code"
+  | "street-address"
+  | "address-line1"
+  | "address-line2"
+  | "country"
+  | "name";
 
 type InputProps = {
-  id: string;
+  id?: string;
   type?: string;
   name?: string;
   autoComplete?: string;
@@ -16,13 +28,7 @@ type InputProps = {
   errorMessage?: string;
   value: string;
   onChange: (text: string) => void;
-  Icon?: {
-    Component: ExpoIconComponent;
-    name: string;
-    size: number;
-    color: string;
-    className?: string;
-  };
+  Icon?: IconType;
   saveErrorSpace?: boolean;
   inputMode?:
     | "text"
@@ -32,53 +38,67 @@ type InputProps = {
     | "tel"
     | "url"
     | "email";
+  style?: object;
 };
 
-export const Input = ({
-  id,
-  autoComplete = "text",
-  type = "text",
-  placeholder,
-  errorMessage,
-  value,
-  onChange,
-  saveErrorSpace = true,
-  suffix,
-  inputMode,
-}: InputProps) => {
-  return (
-    <View className="relative">
-      <View className="flex items-center">
-        <TextInput
-          id={id}
-          autoComplete={autoComplete as AutoCompleteType}
-          secureTextEntry={type === "password"}
-          keyboardType={inputMode as KeyboardTypeOptions}
-          placeholder={placeholder}
-          value={value}
-          onChangeText={onChange}
-          className={`block w-full rounded-md bg-background px-3 py-1.5 text-base text-foreground outline-1 outline-gray-300 focus:outline-2 focus:outline-primary-500 transition-all duration-100 ease-in sm:text-sm ${
-            errorMessage ? "outline-secondary-600" : ""
-          } ${suffix ? "pr-10" : ""}`}
-        />
-        {suffix && (
-          <Text className="absolute right-3 text-foreground text-bold text-sm">
-            {suffix}
+const Input = React.forwardRef<TextInput, InputProps>(
+  (
+    {
+      id,
+      autoComplete = "text",
+      type = "text",
+      placeholder,
+      errorMessage,
+      value,
+      onChange,
+      saveErrorSpace = true,
+      suffix,
+      inputMode,
+      style,
+    },
+    ref
+  ) => {
+    const handleChange = React.useCallback(
+      (text: string) => {
+        onChange(text);
+      },
+      [onChange]
+    );
+
+    return (
+      <View className="relative">
+        <View className="flex-row items-center relative">
+          <TextInput
+            ref={ref}
+            testID={id}
+            autoComplete={autoComplete as AutoCompleteType}
+            secureTextEntry={type === "password"}
+            keyboardType={inputMode as KeyboardTypeOptions}
+            placeholder={placeholder}
+            value={value}
+            onChangeText={handleChange}
+            className={`w-full rounded-lg bg-background focus:border-primary-600 px-3 py-2.5 text-md text-foreground border ${
+              errorMessage ? "border-red-600" : "border-secondary-300"
+            } ${suffix ? "pr-10" : ""}`}
+            style={style}
+          />
+          {suffix && (
+            <Text className="absolute right-3 text-foreground font-bold text-md">
+              {suffix}
+            </Text>
+          )}
+        </View>
+        {(saveErrorSpace || errorMessage) && (
+          <Text className="mt-1 text-xs text-red-600">
+            {errorMessage ? errorMessage : " "}
           </Text>
         )}
       </View>
-      {(saveErrorSpace || errorMessage) && (
-        <Text
-          className={`mt-1 text-xs text-secondary-600 ${
-            saveErrorSpace ? "whitespace-pre-wrap" : ""
-          }`}
-        >
-          {errorMessage ? errorMessage : " "}
-        </Text>
-      )}
-    </View>
-  );
-};
+    );
+  }
+);
+
+Input.displayName = "Input";
 
 type InputFieldProps<T extends FieldValues> = Omit<
   InputProps,
@@ -88,14 +108,7 @@ type InputFieldProps<T extends FieldValues> = Omit<
   name: Path<T>;
   control: Control<T>;
   required?: boolean;
-  sidebarNarrowed?: boolean;
-  Icon?: {
-    Component: ExpoIconComponent;
-    name: string;
-    size: number;
-    color: string;
-    className?: string;
-  };
+  Icon?: IconType;
 };
 
 const InputField = <T extends FieldValues>({
@@ -105,21 +118,20 @@ const InputField = <T extends FieldValues>({
   autoComplete,
   type,
   Icon,
-  sidebarNarrowed,
   suffix,
   placeholder,
   required = false,
   control,
   inputMode,
+  style,
 }: InputFieldProps<T>) => {
   return (
-    <View>
+    <View className="mb-2">
       {label && (
         <Label
           Icon={Icon}
           text={label}
           hint={required ? null : "Pole opcjonalne"}
-          sidebarNarrowed={sidebarNarrowed}
         />
       )}
       <Controller
@@ -136,8 +148,7 @@ const InputField = <T extends FieldValues>({
               placeholder={placeholder}
               suffix={suffix}
               errorMessage={fieldState.error?.message}
-              onChange={field.onChange}
-              Icon={Icon}
+              style={style}
             />
           );
         }}

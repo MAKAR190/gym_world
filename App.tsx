@@ -64,6 +64,7 @@ const MainTabNavigator = () => {
         headerShown: false,
         tabBarStyle: {
           height: 70,
+          paddingHorizontal: 15,
         },
         tabBarButton: TabBarButton,
       }}

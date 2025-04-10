@@ -1,62 +1,60 @@
 import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { ExpoIconComponent } from "@/types/ExpoIcon";
+import { IconType } from "@/types/Icon";
 import { classNames } from "@/utils/helpers";
-import { View, Text, Pressable } from "react-native";
+import { View, Text } from "react-native";
 
 interface LabelProps {
-  Icon?: {
-    Component: ExpoIconComponent;
-    name: string;
-    size: number;
-    color: string;
-    className?: string;
-  };
+  Icon?: IconType;
   hint?: string | React.ReactNode;
   text?: string | React.ReactNode;
   className?: string;
-  sidebarNarrowed?: boolean;
 }
 
-const Label = ({
-  Icon,
-  hint,
-  text,
-  sidebarNarrowed = false,
-  className = "",
-}: LabelProps) => {
+const Label = ({ Icon, hint, text, className = "" }: LabelProps) => {
   return (
     <View
-      className={`text-md space-x-1 flex flex-row justify-start items-center font-medium text-foreground mb-1 ${className}`}
+      className={`text-md space-x-1 flex flex-row justify-start items-center mb-2 ${className}`}
     >
       {Icon && (
-        <Icon.Component
-          name={Icon.name}
-          size={Icon.size}
-          color={Icon.color}
-          className={classNames(Icon.className ?? "", "relative top-0")}
-        />
+        <View>
+          {Icon.type === "expo" ? (
+            <Icon.Component
+              name={Icon.name || ""}
+              size={Icon.size || 24}
+              color={Icon.color || "black"}
+              className={classNames(Icon.className ?? "", "relative top-0")}
+            />
+          ) : (
+            <View>
+              {React.createElement(
+                Icon.Component as React.FC<{
+                  width: number;
+                  height: number;
+                  className?: string;
+                }>,
+                {
+                  width: Icon.size || 24,
+                  height: Icon.size || 24,
+                  className: classNames(Icon.className ?? "", "relative top-0"),
+                }
+              )}
+            </View>
+          )}
+        </View>
       )}
-      <Text>{text}</Text>
+      <Text className="text-foreground font-medium">{text}</Text>
       {hint && (
         <View className="relative">
           <View
-            className={`flex flex-row items-center sm:hidden md:hidden ${sidebarNarrowed ? "lg:block" : "lg:hidden"} xl:hidden`}
+            className={`flex flex-row items-center sm:hidden md:hidden lg:block xl:hidden`}
           >
-            <Pressable>
-              <FontAwesome
-                name="question-circle-o"
-                size={20}
-                color="black"
-              />
-            </Pressable>
             <View className="absolute left-0 bottom-full mb-2 hidden group-focus:block group-hover:block w-max bg-gray-700 rounded-md shadow-lg">
               <Text className="text-white text-xs p-2">{hint}</Text>
             </View>
           </View>
 
           <View
-            className={`hidden sm:flex md:flex ${sidebarNarrowed ? "lg:hidden" : "lg:flex"} xl:flex flex-row text-xs pt-0.5 font-medium text-gray-600`}
+            className={`hidden sm:flex md:flex lg:hidden xl:flex flex-row text-xs pt-0.5 font-semibold text-gray-600`}
           >
             <Text>-</Text>
             <Text> {hint}</Text>

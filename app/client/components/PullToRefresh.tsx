@@ -25,7 +25,7 @@ const RefreshLoader = ({
       loop={!isRefreshCompleted}
       style={{ width: 100, height: 100 }}
       progress={progress}
-      speed={2}
+      speed={3}
     />
   );
 };

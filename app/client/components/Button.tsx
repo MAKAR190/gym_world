@@ -1,16 +1,19 @@
 import React from "react";
 import { classNames } from "@/utils/helpers";
-import { ActivityIndicator } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+} from "react-native";
+import { IconType } from "@/types/Icon";
 
-export interface ButtonProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+export interface ButtonProps extends TouchableOpacityProps {
   isLoading?: boolean;
   variant?: "primary" | "secondary";
   text: string;
-  type?: "button" | "submit" | "reset";
+  Icon?: IconType;
 }
 
 interface VariantStylesProps {
@@ -22,26 +25,28 @@ export const VARIANT_STYLES = {
   primary: ({ disabled, isLoading }: VariantStylesProps) =>
     `${disabled ? "bg-primary-100 cursor-not-allowed" : "bg-primary-600"} ${
       isLoading ? "text-transparent cursor-wait" : "text-white"
-    } flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600`,
+    } flex w-full justify-center rounded-md px-5 py-4 shadow-sm active:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600`,
   secondary: ({ disabled, isLoading }: VariantStylesProps) =>
-    `${disabled ? "bg-secondary-100 cursor-not-allowed" : "bg-background"} ${
-      isLoading ? "text-transparent cursor-wait" : "text-secondary-900"
-    } flex w-full items-center justify-center gap-3 rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-secondary-300 hover:bg-secondary-50 focus-visible:ring-transparent`,
+    `${disabled ? "bg-secondary-100" : "bg-white"} ${
+      isLoading ? "text-transparent" : "text-secondary-900"
+    } flex w-full items-center justify-center gap-3 rounded-md px-5 py-3 text-sm font-semibold 
+  border border-secondary-300
+  ${disabled ? "" : "active:bg-secondary-50"}`,
 };
 
 const Button = ({
   isLoading,
-  type,
   className = "",
   disabled,
   variant = "primary",
   text,
+  Icon,
   ...rest
 }: ButtonProps) => {
   const disable = disabled || isLoading;
 
   return (
-    <button
+    <TouchableOpacity
       {...rest}
       disabled={disable}
       className={classNames(
@@ -51,17 +56,57 @@ const Button = ({
         }),
         className
       )}
-      type={type}
     >
-        {isLoading ? (
-          <ActivityIndicator
-            className="flex items-center justify-center"
-            size={20}
-          />
-        ) : (
-          text
+      {isLoading ? (
+        <ActivityIndicator
+          className="flex items-center justify-center"
+          size={20}
+        />
+      ) : (
+        <View className="flex-row items-center justify-center gap-3">
+          {Icon && (
+            <View>
+              {Icon.type === "expo" ? (
+                <Icon.Component
+                  name={Icon.name || ""}
+                  size={Icon.size || 24}
+                  color={
+                    Icon.color || (variant === "primary" ? "white" : "black")
+                  }
+                  className={Icon.className}
+                />
+              ) : (
+                <View>
+                  {React.createElement(
+                    Icon.Component as React.FC<{
+                      width: number;
+                      height: number;
+                      className?: string;
+                    }>,
+                    {
+                      width: Icon.size || 24,
+                      height: Icon.size || 24,
+                      className: classNames(
+                        Icon.className ?? "",
+                        "relative top-0"
+                      ),
+                    }
+                  )}
+                </View>
+              )}
+            </View>
+          )}
+          <Text
+            className={classNames(
+              variant === "primary" ? "text-white" : "text-foreground",
+              "text-lg text-center font-semibold"
+            )}
+          >
+            {text}
+          </Text>
+        </View>
       )}
-    </button>
+    </TouchableOpacity>
   );
 };
 

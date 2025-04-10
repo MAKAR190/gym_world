@@ -1,105 +1,119 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import Title from "@/client/components/Title";
+import InputField from "@/client/components/Input";
+import { withZodForm, InjectedProps } from "@/client/hocs/WithZodForm";
+import { LoginFormType } from "@/types/FormModels";
+import { LOGIN } from "@/utils/constants";
+import Button from "@/client/components/Button";
+import GoogleIconSvg from "@/client/assets/icons/google-icon.svg";
+
+const LoginFormComponent = ({
+  form,
+  handleFormSubmit,
+}: InjectedProps<LoginFormType>) => {
+  const { control } = form;
+
+  return (
+    <View>
+      <View>
+        <InputField
+          label="Email address or username"
+          id="emailOrUsername"
+          name="emailOrUsername"
+          control={control}
+          autoComplete="email"
+          inputMode="email"
+        />
+      </View>
+      <View>
+        <InputField
+          label="Password"
+          id="password"
+          name="password"
+          control={control}
+          type="password"
+          autoComplete="password"
+        />
+      </View>
+      <View className="mt-4">
+        <TouchableOpacity className="w-full flex justify-end">
+          <Title variant="extra-small" className="text-primary-600 font-light">
+            Forgot password?
+          </Title>
+        </TouchableOpacity>
+      </View>
+      <View className="mt-4">
+        <Button
+          text="Sign in"
+          variant="primary"
+          onPress={handleFormSubmit}
+          className="mx-auto"
+        />
+      </View>
+    </View>
+  );
+};
+
+const LoginForm = withZodForm<LoginFormType>(LoginFormComponent);
 
 export default function LoginScreen() {
   return (
-    <ScrollView className="flex min-h-full flex-1 flex-col py-12 sm:px-6 lg:px-8">
-      <View className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Text className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+    <ScrollView className="flex min-h-full flex-1 flex-col bg-background">
+      <View className="mt-28">
+        <Image
+          source={require("@/client/assets/logo.png")}
+          className="w-32 h-32 mx-auto"
+        />
+        <Title
+          className="text-center w-full text-foreground"
+          variant="extra-large"
+        >
           Sign in to your account
-        </Text>
+        </Title>
       </View>
 
-      <View className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <View className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+      <View className="mx-auto w-full">
+        <View className="bg-white px-6 py-12">
           <View className="space-y-6">
-            <View>
-              <Text className="block text-sm font-medium text-gray-900">
-                Email address
-              </Text>
-              <View className="mt-2">
-                <TextInput
-                  id="email"
-                  autoComplete="email"
-                  keyboardType="email-address"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
-                />
-              </View>
-            </View>
-
-            <View>
-              <Text className="block text-sm font-medium text-gray-900">
-                Password
-              </Text>
-              <View className="mt-2">
-                <TextInput
-                  id="password"
-                  secureTextEntry
-                  autoComplete="current-password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
-                />
-              </View>
-            </View>
-
-            <View className="flex flex-row items-center justify-between">
-              <View className="flex flex-row gap-3">
-                <Text className="text-sm text-gray-900">
-                  Remember me
-                </Text>
-              </View>
-
-              <TouchableOpacity>
-                <Text className="text-sm font-semibold text-indigo-600">
-                  Forgot password?
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View>
-              <TouchableOpacity
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 shadow-sm"
-              >
-                <Text className="text-sm font-semibold text-white">
-                  Sign in
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <LoginForm
+              defaultValues={LOGIN.defaultValues}
+              validationSchema={LOGIN.validationSchema}
+              onSubmit={(data) => {
+                console.log(data);
+              }}
+            />
           </View>
-
           <View>
-            <View className="relative mt-10">
-              <View className="absolute inset-0 flex items-center">
-                <View className="w-full border-t border-gray-200" />
-              </View>
-              <View className="relative flex justify-center">
-                <Text className="bg-white px-6 text-sm font-medium text-gray-900">
+            <View className="relative mt-10 h-4 flex items-center justify-center">
+              <View className="absolute top-1/2 w-full h-px bg-secondary-200" />
+              <View className="z-10 px-2">
+                <Text className="px-4 text-sm font-medium text-foreground bg-background">
                   Or continue with
                 </Text>
               </View>
             </View>
-
-            <View className="mt-6 grid grid-cols-2 gap-4">
-              <TouchableOpacity
-                className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 shadow-sm"
-              >
-                <Text className="text-sm font-semibold text-gray-900">Google</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
-                className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 shadow-sm"
-              >
-                <Text className="text-sm font-semibold text-gray-900">GitHub</Text>
-              </TouchableOpacity>
+            <View className="mt-6 flex flex-row ">
+              <Button
+                text="Google"
+                variant="secondary"
+                className="w-full mt-2"
+                Icon={{
+                  type: "svg",
+                  Component: GoogleIconSvg,
+                  size: 24,
+                }}
+              />
             </View>
           </View>
         </View>
 
-        <View className="mt-10 flex-row justify-center">
-          <Text className="text-center text-sm text-gray-500">
+        <View className="flex-row justify-center items-center">
+          <Text className="text-center text-md text-secondary-500">
             Not a member?{" "}
           </Text>
           <TouchableOpacity>
-            <Text className="font-semibold text-indigo-600">
-              Start a 14 day free trial
+            <Text className="font-semibold text-md text-primary-600">
+              Sign up
             </Text>
           </TouchableOpacity>
         </View>
