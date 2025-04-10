@@ -5,14 +5,14 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home, Explore, Add, Marketplace, Profile } from "./app/client/screens";
+import { Home, Explore, Add, Marketplace, Profile } from "@/client/screens";
 import {
   TabBarHomeIcon,
   TabBarExploreIcon,
   TabBarAddIcon,
   TabBarMarketplaceIcon,
   TabBarProfileIcon,
-} from "./app/client/assets/expo-icons";
+} from "@/client/assets/icons/expo-icons";
 import * as Sentry from "@sentry/react-native";
 import "./global.css";
 

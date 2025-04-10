@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
-import { PullToRefresh } from "../components/PullToRefresh";
+import { PullToRefresh } from "@/client/components/PullToRefresh";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;

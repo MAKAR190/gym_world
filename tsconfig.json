@@ -14,7 +14,11 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "types": ["nativewind/types"]
+    "types": ["nativewind/types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["app/*"]
+    }
   },
   "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
   "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"]

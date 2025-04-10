@@ -5,7 +5,7 @@ import {
   PanGestureHandlerProps,
 } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
-import { usePullToRefresh } from "../hooks/PullToRefresh";
+import { usePullToRefresh } from "@/client/hooks/PullToRefresh";
 import LottieView from "lottie-react-native";
 
 const RefreshLoader = ({
