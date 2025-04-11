@@ -11,6 +11,9 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
+    "@expo-google-fonts/dev": "^0.3.0",
+    "@expo-google-fonts/geist": "^0.3.0",
+    "@expo-google-fonts/inter": "^0.3.0",
     "@expo/vector-icons": "^14.0.4",
     "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^5.0.1",
@@ -25,6 +28,8 @@
     "bcrypt-ts": "^6.0.0",
     "ethers": "^6.13.5",
     "expo": "~52.0.42",
+    "expo-font": "^13.0.4",
+    "expo-splash-screen": "^0.29.22",
     "expo-status-bar": "~2.0.1",
     "lottie-react-native": "^7.1.0",
     "nativewind": "^4.1.23",

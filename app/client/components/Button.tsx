@@ -98,8 +98,10 @@ const Button = ({
           )}
           <Text
             className={classNames(
-              variant === "primary" ? "text-white" : "text-foreground",
-              "text-lg text-center font-semibold"
+              variant === "primary"
+                ? "text-white font-inter font-semibold"
+                : "text-foreground font-geist font-semibold",
+              "text-lg text-center"
             )}
           >
             {text}

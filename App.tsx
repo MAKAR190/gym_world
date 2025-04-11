@@ -13,8 +13,28 @@ import {
   TabBarMarketplaceIcon,
   TabBarProfileIcon,
 } from "@/client/assets/icons/expo-icons";
+import {
+  useFonts as useInterFonts,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from "@expo-google-fonts/inter";
+import {
+  useFonts as useGeistFonts,
+  Geist_400Regular,
+  Geist_500Medium,
+  Geist_600SemiBold,
+  Geist_700Bold,
+  Geist_800ExtraBold,
+  Geist_900Black,
+} from "@expo-google-fonts/geist";
+import * as SplashScreen from "expo-splash-screen";
 import * as Sentry from "@sentry/react-native";
 import "./global.css";
+import { useEffect } from "react";
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -44,16 +64,11 @@ const TabBarButton = (props: BottomTabBarButtonProps) => (
 const AddButton = (props: BottomTabBarButtonProps) => {
   const navigation = useNavigation();
   const handlePress = () => {
-      Vibration.vibrate(50);
-      navigation.navigate("Add" as never);
-    };
+    Vibration.vibrate(50);
+    navigation.navigate("Add" as never);
+  };
 
-  return (
-    <Pressable
-      {...props}
-      onPress={handlePress}
-    />
-  );
+  return <Pressable {...props} onPress={handlePress} />;
 };
 
 const MainTabNavigator = () => {
@@ -142,6 +157,48 @@ const MainTabNavigator = () => {
 };
 
 function App() {
+  const [interFontsLoaded, interFontsError] = useInterFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
+  });
+
+  const [geistFontsLoaded, geistFontsError] = useGeistFonts({
+    Geist_400Regular,
+    Geist_500Medium,
+    Geist_600SemiBold,
+    Geist_700Bold,
+    Geist_800ExtraBold,
+    Geist_900Black,
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  useEffect(() => {
+    if (
+      (interFontsLoaded && geistFontsLoaded) ||
+      (interFontsError && geistFontsError)
+    ) {
+      SplashScreen.hideAsync();
+    }
+  }, [interFontsLoaded, interFontsError, geistFontsLoaded, geistFontsError]);
+
+  const fontsReady =
+    (interFontsLoaded || interFontsError) &&
+    (geistFontsLoaded || geistFontsError);
+
+  if (!fontsReady) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -154,7 +211,7 @@ function App() {
           name="Add"
           component={Add}
           options={{
-            presentation: "modal",  
+            presentation: "modal",
             headerShown: false,
           }}
         />

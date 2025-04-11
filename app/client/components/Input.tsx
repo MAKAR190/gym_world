@@ -77,7 +77,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
             placeholder={placeholder}
             value={value}
             onChangeText={handleChange}
-            className={`w-full rounded-lg bg-background focus:border-primary-600 px-3 py-2.5 text-md text-foreground border ${
+            className={`w-full rounded-lg bg-background focus:border-primary-600 px-3 py-2.5 font-geist text-md text-foreground border ${
               errorMessage ? "border-red-600" : "border-secondary-300"
             } ${suffix ? "pr-10" : ""}`}
             style={style}

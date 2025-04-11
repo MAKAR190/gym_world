@@ -37,7 +37,7 @@ const LoginFormComponent = ({
       </View>
       <View className="mt-4">
         <TouchableOpacity className="w-full flex justify-end">
-          <Title variant="extra-small" className="text-primary-600 font-light">
+          <Title variant="extra-small" className="text-primary-600">
             Forgot password?
           </Title>
         </TouchableOpacity>
@@ -58,7 +58,7 @@ const LoginForm = withZodForm<LoginFormType>(LoginFormComponent);
 
 export default function LoginScreen() {
   return (
-    <ScrollView className="flex min-h-full flex-1 flex-col bg-background">
+    <ScrollView className="flex min-h-full flex-1 flex-col bg-background relative isolate">
       <View className="mt-28">
         <Image
           source={require("@/client/assets/logo.png")}
@@ -87,7 +87,7 @@ export default function LoginScreen() {
             <View className="relative mt-10 h-4 flex items-center justify-center">
               <View className="absolute top-1/2 w-full h-px bg-secondary-200" />
               <View className="z-10 px-2">
-                <Text className="px-4 text-sm font-medium text-foreground bg-background">
+                <Text className="px-4 text-sm font-medium text-foreground bg-background font-inter">
                   Or continue with
                 </Text>
               </View>
@@ -108,11 +108,11 @@ export default function LoginScreen() {
         </View>
 
         <View className="flex-row justify-center items-center">
-          <Text className="text-center text-md text-secondary-500">
+          <Text className="text-center text-md font-inter text-secondary-500">
             Not a member?{" "}
           </Text>
           <TouchableOpacity>
-            <Text className="font-semibold text-md text-primary-600">
+            <Text className="font-semibold text-md text-primary-600 font-geist">
               Sign up
             </Text>
           </TouchableOpacity>
