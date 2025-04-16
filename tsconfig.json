@@ -17,7 +17,7 @@
     "types": ["nativewind/types"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["app/*"]
+      "@/*": ["./app/*"]
     }
   },
   "exclude": ["node_modules", "babel.config.js", "metro.config.js"],

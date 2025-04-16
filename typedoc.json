@@ -1,0 +1,20 @@
+{
+  "entryPoints": ["./app/**/*.ts", "./app/**/*.tsx"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "tsconfig": "tsconfig.json",
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ],
+  "name": "Gym World Documentation",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "includeVersion": true
+}

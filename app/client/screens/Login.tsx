@@ -6,12 +6,16 @@ import { LoginFormType } from "@/types/FormModels";
 import { LOGIN } from "@/utils/constants";
 import Button from "@/client/components/Button";
 import GoogleIconSvg from "@/client/assets/icons/google-icon.svg";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "@/types/AppModels";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const LoginFormComponent = ({
   form,
   handleFormSubmit,
 }: InjectedProps<LoginFormType>) => {
   const { control } = form;
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
     <View>
@@ -36,7 +40,10 @@ const LoginFormComponent = ({
         />
       </View>
       <View className="mt-4">
-        <TouchableOpacity className="w-full flex justify-end">
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ForgotPassword")}
+          className="w-full flex justify-end"
+        >
           <Title variant="extra-small" className="text-primary-600">
             Forgot password?
           </Title>

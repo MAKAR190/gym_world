@@ -6,6 +6,8 @@ import {
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Home, Explore, Add, Marketplace, Profile } from "@/client/screens";
+import ForgotPassword from "@/client/screens/ForgotPassword";
+
 import {
   TabBarHomeIcon,
   TabBarExploreIcon,
@@ -35,6 +37,8 @@ import * as SplashScreen from "expo-splash-screen";
 import * as Sentry from "@sentry/react-native";
 import "./global.css";
 import { useEffect } from "react";
+import { RootStackParamList } from "@/types/AppModels";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -62,10 +66,10 @@ const TabBarButton = (props: BottomTabBarButtonProps) => (
   />
 );
 const AddButton = (props: BottomTabBarButtonProps) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const handlePress = () => {
     Vibration.vibrate(50);
-    navigation.navigate("Add" as never);
+    navigation.navigate("Add");
   };
 
   return <Pressable {...props} onPress={handlePress} />;
@@ -212,6 +216,16 @@ function App() {
           component={Add}
           options={{
             presentation: "modal",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{
+            animation: "ios_from_right",
+            gestureEnabled: true,
+            gestureDirection: "horizontal",
             headerShown: false,
           }}
         />
