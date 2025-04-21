@@ -12,8 +12,13 @@ export const LoginSchema = z.object({
       }
       
       return usernamePattern.test(value);
-    }, "Must be a valid email address or username (letters, numbers, - and _ only)"),
+    }, "Must be a valid email address or username (latin letters, numbers, - and _ only)"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
+export const ForgotPasswordSchema = z.object({
+  emailOrUsername: LoginSchema.shape.emailOrUsername,
+});
+
 export type LoginFormType = z.infer<typeof LoginSchema>;
+export type ForgotPasswordFormType = z.infer<typeof ForgotPasswordSchema>;

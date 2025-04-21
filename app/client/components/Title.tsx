@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { Text } from "react-native";
 
 const VARIANT_TO_STYLE_MAP = {
-  "extra-large": "text-3xl leading-8 tracking-tight font-inter font-bold",
+  "extra-large": "text-3xl leading-20 tracking-tight font-inter font-bold",
   large: "text-2xl leading-7 tracking-tight ",
   normal: "text-xl leading-7 tracking-tight ",
   small: "text-lg/8 leading-7 tracking-tight ",
