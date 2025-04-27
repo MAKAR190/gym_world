@@ -5,7 +5,7 @@ import {
   PanGestureHandlerProps,
 } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
-import { usePullToRefresh } from "../hooks/PullToRefresh";
+import { usePullToRefresh } from "@/client/hooks/pullToRefresh";
 import LottieView from "lottie-react-native";
 
 const RefreshLoader = ({
@@ -25,7 +25,7 @@ const RefreshLoader = ({
       loop={!isRefreshCompleted}
       style={{ width: 100, height: 100 }}
       progress={progress}
-      speed={2}
+      speed={3}
     />
   );
 };

@@ -63,7 +63,7 @@ jobs:
   sentry-release:
     name: Create Sentry Release
     runs-on: ubuntu-latest
-    needs: [eslint, expo-test]
+    needs: [expo-test]
     environment: pr-checks
 
     steps:
