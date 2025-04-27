@@ -1,3 +1,5 @@
+// TODO: Finish forgot password
+
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import Title from "../components/Title";
@@ -10,31 +12,7 @@ import {
 import InputField from "@/client/components/Input";
 import LottieView from "lottie-react-native";
 import StepIndicator from "react-native-step-indicator";
-
-const stepIndicatorStyles = {
-  stepIndicatorSize: 25,
-  currentStepIndicatorSize: 30,
-  separatorStrokeWidth: 2,
-  currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: "#8D4DFF",
-  stepStrokeWidth: 3,
-  stepStrokeFinishedColor: "#D2B8FF",
-  stepStrokeUnFinishedColor: "#dedede",
-  separatorFinishedColor: "#D2B8FF",
-  separatorUnFinishedColor: "#dedede",
-  stepIndicatorFinishedColor: "#D2B8FF",
-  stepIndicatorUnFinishedColor: "#ffffff",
-  stepIndicatorCurrentColor: "#ffffff",
-  stepIndicatorLabelFontSize: 10,
-  currentStepIndicatorLabelFontSize: 10,
-  stepIndicatorLabelCurrentColor: "transparent",
-  stepIndicatorLabelFinishedColor: "transparent",
-  stepIndicatorLabelUnFinishedColor: "transparent",
-  labelColor: "#D2B8FF",
-  labelSize: 13,
-  currentStepLabelColor: "#8D4DFF",
-};
-const labels = ["Enter Details", "Verify", "Complete"];
+import { WIZARD_STYLES, WIZARD_LABELS } from "@/utils/constants";
 
 const ForgotPasswordForm = ({
   form,
@@ -76,7 +54,7 @@ const ForgotPassword = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNextStep = () => {
-    if (currentStep < labels.length - 1) {
+    if (currentStep < WIZARD_LABELS.forgotPassword.length - 1) {
       setCurrentStep((prev) => prev + 1);
     }
   };
@@ -91,10 +69,10 @@ const ForgotPassword = () => {
     <View className="flex-1 justify-center  bg-background">
       <View className="w-full px-4 py-4 mb-10">
         <StepIndicator
-          customStyles={stepIndicatorStyles}
+          customStyles={WIZARD_STYLES}
           currentPosition={currentStep}
-          labels={labels}
-          stepCount={labels.length}
+          labels={WIZARD_LABELS.forgotPassword}
+          stepCount={WIZARD_LABELS.forgotPassword.length}
         />
       </View>
       <LottieView

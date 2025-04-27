@@ -143,6 +143,7 @@ const InputField = <T extends FieldValues>({
               {...field}
               id={id}
               type={type}
+              onChange={field.onChange}
               autoComplete={autoComplete}
               inputMode={inputMode}
               placeholder={placeholder}

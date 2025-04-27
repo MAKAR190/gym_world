@@ -1,7 +1,11 @@
-import Login from "./Login";
+import { View, Text } from "react-native";
 
 const Add = () => {
-  return <Login />;
+  return (
+    <View>
+      <Text>Add</Text>
+    </View>
+  );
 };
 
 export default Add;

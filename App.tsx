@@ -5,8 +5,15 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home, Explore, Add, Marketplace, Profile } from "@/client/screens";
-import ForgotPassword from "@/client/screens/ForgotPassword";
+import {
+  Home,
+  Explore,
+  Add,
+  Marketplace,
+  Profile,
+  SignUp,
+  ForgotPassword,
+} from "@/client/screens";
 
 import {
   TabBarHomeIcon,
@@ -39,9 +46,18 @@ import "./global.css";
 import { useEffect } from "react";
 import { RootStackParamList } from "@/types/AppModels";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "react-native-url-polyfill/auto";
+import { AuthProvider } from "@/client/contexts/AuthContext";
+import Login from "@/client/screens/Login";
+import { ProtectedRoute } from "@/client/components/ProtectedRoute";
+
+if (!process.env.EXPO_PUBLIC_SENTRY_DSN) {
+  throw new Error("SENTRY_DSN is not set");
+}
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
   sendDefaultPii: true,
   tracesSampleRate: 1.0,
   profilesSampleRate: 1.0,
@@ -66,7 +82,8 @@ const TabBarButton = (props: BottomTabBarButtonProps) => (
   />
 );
 const AddButton = (props: BottomTabBarButtonProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const handlePress = () => {
     Vibration.vibrate(50);
     navigation.navigate("Add");
@@ -160,6 +177,14 @@ const MainTabNavigator = () => {
   );
 };
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    mutations: {
+      retry: false,
+    },
+  },
+});
+
 function App() {
   const [interFontsLoaded, interFontsError] = useInterFonts({
     Inter_400Regular,
@@ -204,33 +229,59 @@ function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Tabs"
-          component={MainTabNavigator}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Add"
-          component={Add}
-          options={{
-            presentation: "modal",
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPassword}
-          options={{
-            animation: "ios_from_right",
-            gestureEnabled: true,
-            gestureDirection: "horizontal",
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
+              options={{
+                animation: "ios_from_right",
+                gestureEnabled: true,
+                gestureDirection: "horizontal",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ForgotPassword"
+              component={ForgotPassword}
+              options={{
+                animation: "ios_from_right",
+                gestureEnabled: true,
+                gestureDirection: "horizontal",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Tabs" options={{ headerShown: false }}>
+              {() => (
+                <ProtectedRoute>
+                  <MainTabNavigator />
+                </ProtectedRoute>
+              )}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Add"
+              options={{
+                presentation: "modal",
+                headerShown: false,
+              }}
+            >
+              {() => (
+                <ProtectedRoute>
+                  <Add />
+                </ProtectedRoute>
+              )}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
