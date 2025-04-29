@@ -18,7 +18,7 @@ interface UsePullToRefreshProps {
   maxPullDistance?: number;
 }
 
-export const usePullToRefresh = ({
+const usePullToRefresh = ({
   onRefresh,
   pullThreshold = 40,
   maxPullDistance = 40,
@@ -197,3 +197,5 @@ export const usePullToRefresh = ({
     hardReset,
   };
 };
+
+export default usePullToRefresh;

@@ -21,7 +21,7 @@ export type InjectedProps<T extends Record<string, unknown>> = {
   handleFormSubmit: () => void;
 };
 
-export function withZodForm<
+function withZodForm<
   T extends Record<string, unknown>,
   P extends object = {},
 >(Component: React.ComponentType<P & InjectedProps<T>>) {
@@ -59,3 +59,5 @@ export function withZodForm<
     );
   };
 }
+
+export default withZodForm;

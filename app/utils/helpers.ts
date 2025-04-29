@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+import { AppErrorCodes, AppErrorMessages } from "@/types/AppModels";
 export function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
 }
@@ -40,3 +42,7 @@ export const isEmail = (input: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(input);
 };
+
+export function handleError(errorCode: AppErrorCodes) {
+  Alert.alert("Error", AppErrorMessages[errorCode], [{ text: "OK" }]);
+}

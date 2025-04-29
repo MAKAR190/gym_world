@@ -46,7 +46,14 @@ export const WIZARD_STYLES = {
   currentStepLabelColor: "#8D4DFF",
 };
 
-export const WIZARD_LABELS = {
-  forgotPassword: ["Enter Details", "Verify"],
-  signUp: ["Quick Setup", "QR Code", "Notifications"],
+export const WIZARD_ROUTES = {
+  forgotPassword: [
+    { key: "enterDetails", title: "Enter Details" },
+    { key: "verify", title: "Verify" },
+  ],
+  signUp: [
+    { key: "setup", title: "Setup" },
+    { key: "qrcode", title: "QR Code" },
+    { key: "notifications", title: "Notifications" },
+  ],
 };

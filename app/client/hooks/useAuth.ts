@@ -3,19 +3,19 @@ import { signUp, signIn, getCurrentUser } from "@/server/services/auth";
 import { SignUpFormType, LoginFormType } from "@/types/FormModels";
 import { supabase } from "@/lib/supabase";
 
-export const useSignUp = () => {
+const useSignUp = () => {
   return useMutation({
     mutationFn: (formData: SignUpFormType) => signUp({ data: formData }),
   });
 };
 
-export const useSignIn = () => {
+const useSignIn = () => {
   return useMutation({
     mutationFn: (formData: LoginFormType) => signIn({ data: formData }),
   });
 };
 
-export const useSession = () => {
+const useSession = () => {
   const { data: session, isLoading } = useQuery({
     queryKey: ["session"],
     queryFn: async () => {
@@ -38,3 +38,5 @@ export const useSession = () => {
     isLoading,
   };
 };
+
+export default { useSignUp, useSignIn, useSession };

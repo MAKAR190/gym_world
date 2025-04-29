@@ -11,7 +11,8 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
-    "**/*.spec.tsx"
+    "**/*.spec.tsx",
+    "**/.local/**"
   ],
   "name": "Gym World Documentation",
   "excludePrivate": true,
