@@ -13,7 +13,9 @@ const NotificationsStep = ({
   onNotificationsChange: (value: boolean) => void;
   formData: SignUpFormType | null;
 }) => {
-  const [isChecked, setIsChecked] = useState(formData?.notifications);
+  const [isChecked, setIsChecked] = useState<boolean>(
+    formData?.notifications ?? false
+  );
 
   const handleCheckChange = (value: boolean) => {
     setIsChecked(value);

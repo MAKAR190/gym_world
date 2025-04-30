@@ -25,11 +25,12 @@ const QRCodeStep = ({ formData }: { formData: SignUpFormType | null }) => {
       try {
         const uri = await viewShotRef.current!.capture();
         const targetPath = `${FileSystem.cacheDirectory}gym-world-qrcode.png`;
-        await FileSystem.moveAsync({
-          from: uri,
-          to: targetPath,
-        });
-
+          
+        if ((await FileSystem.getInfoAsync(targetPath)).exists) {
+          await FileSystem.deleteAsync(targetPath, { idempotent: true });
+        }
+          
+        await FileSystem.moveAsync({ from: uri, to: targetPath });
         if (await Sharing.isAvailableAsync()) {
           await Sharing.shareAsync(targetPath);
         } else {
