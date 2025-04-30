@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode } from "react";
-import { useSession } from "@/client/hooks/useAuth";
+import { auth } from "@/client/hooks";
 import { Session, User } from "@supabase/supabase-js";
 
 type AuthContextType = {
@@ -10,8 +10,8 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const { session, user, isLoading } = useSession();
+function AuthProvider({ children }: { children: ReactNode }) {
+  const { session, user, isLoading } = auth.useSession();
 
   return (
     <AuthContext.Provider value={{ session: session ?? null, user: user ?? null, isLoading }}>
@@ -27,3 +27,5 @@ export function useAuth() {
   }
   return context;
 }
+
+export default AuthProvider;

@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { useSession } from "@/client/hooks/useAuth";
+import { auth } from "@/client/hooks";
 import { signOut } from "@/server/services/auth";
 import { Button } from "@/client/components";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/AppModels";
 
 const Profile = () => {
-  const { user } = useSession();
+  const { user } = auth.useSession();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 

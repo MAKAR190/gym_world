@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { User } from "@supabase/auth-js";
 import { LoginFormType, SignUpFormType } from "@/types/FormModels";
 import { formDataToDatabase, isEmail } from "@/utils/helpers";
-import { AuthResponse } from "@/types/AppModels";
+import { AppErrorCodes, AuthResponse } from "@/types/AppModels";
 
 export const signUp = async ({
   data: formData,
@@ -38,7 +38,7 @@ export const signUp = async ({
   });
 
   if (error) {
-    throw error;
+    throw AppErrorCodes.SIGN_UP_FAILED;
   }
 
   const { error: insertError } = await supabase.from("users").insert({
@@ -47,7 +47,7 @@ export const signUp = async ({
   });
 
   if (insertError) {
-    throw insertError;
+    throw AppErrorCodes.USER_NOT_CREATED;
   }
 
   return { data, error: null };
@@ -84,7 +84,7 @@ export const signIn = async ({
   });
 
   if (error) {
-    throw error;
+    throw AppErrorCodes.SIGN_IN_FAILED;
   }
 
   if (!isEmailInput) {
@@ -95,11 +95,11 @@ export const signIn = async ({
       .single();
 
     if (userDataError || !userData) {
-      throw new Error("User data not found");
+      throw AppErrorCodes.USER_NOT_FOUND;
     }
 
     if (userData.username !== emailOrUsername) {
-      throw new Error("Username does not match the authentication details");
+      throw AppErrorCodes.USER_CREDENTIALS_DO_NOT_MATCH;
     }
   }
 
@@ -115,7 +115,7 @@ export const signInWithGoogle = async (): Promise<{
   });
 
   if (error) {
-    throw error;
+    throw AppErrorCodes.SIGN_IN_FAILED;
   }
 
   return { data, error: null };
@@ -123,11 +123,11 @@ export const signInWithGoogle = async (): Promise<{
 
 export const signOut = async (): Promise<void> => {
   const { error } = await supabase.auth.signOut();
-  if (error) throw error;
+  if (error) throw AppErrorCodes.SIGN_OUT_FAILED;
 };
 
 export const getCurrentUser = async (): Promise<{ user: User | null }> => {
   const { data, error } = await supabase.auth.getUser();
-  if (error) throw error;
+  if (error) throw AppErrorCodes.GET_CURRENT_USER_FAILED;
   return data;
 };
