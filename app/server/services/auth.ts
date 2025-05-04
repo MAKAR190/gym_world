@@ -3,6 +3,7 @@ import { User } from "@supabase/auth-js";
 import { LoginFormType, SignUpFormType } from "@/types/FormModels";
 import { formDataToDatabase, isEmail } from "@/utils/helpers";
 import { AppErrorCodes, AuthResponse } from "@/types/AppModels";
+import { DEFAULT_PROFILE_PICTURE } from "@/utils/constants";
 
 export const signUp = async ({
   data: formData,
@@ -23,6 +24,8 @@ export const signUp = async ({
     ...formToDatabase,
     username: isEmailInput ? null : formData.emailOrUsername,
     email: isEmailInput ? formData.emailOrUsername : null,
+    profile_picture: DEFAULT_PROFILE_PICTURE,
+    bio: "No bio, just working out",
     provider,
   };
 
@@ -121,13 +124,16 @@ export const signInWithGoogle = async (): Promise<{
   return { data, error: null };
 };
 
-export const signOut = async (): Promise<void> => {
-  const { error } = await supabase.auth.signOut();
-  if (error) throw AppErrorCodes.SIGN_OUT_FAILED;
-};
-
 export const getCurrentUser = async (): Promise<{ user: User | null }> => {
-  const { data, error } = await supabase.auth.getUser();
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData.session?.user.id) return { user: null };
+
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", sessionData.session.user.id)
+    .single();
+
   if (error) throw AppErrorCodes.GET_CURRENT_USER_FAILED;
-  return data;
+  return { user: data };
 };

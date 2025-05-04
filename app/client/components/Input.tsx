@@ -25,6 +25,7 @@ type InputProps = {
   autoComplete?: string;
   suffix?: string;
   placeholder?: string;
+  maxLength?: number;
   errorMessage?: string;
   value: string;
   onChange: (text: string) => void;
@@ -53,6 +54,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
       onChange,
       saveErrorSpace = true,
       suffix,
+      maxLength,
       inputMode,
       style,
     },
@@ -81,6 +83,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
               errorMessage ? "border-red-600" : "border-secondary-300"
             } ${suffix ? "pr-10" : ""}`}
             style={style}
+            maxLength={maxLength}
           />
           {suffix && (
             <Text className="absolute right-3 text-foreground font-bold text-md">
@@ -108,6 +111,7 @@ type InputFieldProps<T extends FieldValues> = Omit<
   name: Path<T>;
   control: Control<T>;
   required?: boolean;
+  maxLength?: number;
   Icon?: IconType;
 };
 
@@ -121,6 +125,7 @@ const InputField = <T extends FieldValues>({
   suffix,
   placeholder,
   required = false,
+  maxLength,
   control,
   inputMode,
   style,
@@ -142,6 +147,7 @@ const InputField = <T extends FieldValues>({
             <Input
               {...field}
               id={id}
+              maxLength={maxLength}
               type={type}
               onChange={field.onChange}
               autoComplete={autoComplete}

@@ -46,3 +46,12 @@ export const isEmail = (input: string): boolean => {
 export function handleError(errorCode: AppErrorCodes) {
   Alert.alert("Error", AppErrorMessages[errorCode], [{ text: "OK" }]);
 }
+
+export function decode(base64: string): Uint8Array {
+  const binaryString = atob(base64);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
+}

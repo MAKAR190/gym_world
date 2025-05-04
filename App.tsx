@@ -1,17 +1,11 @@
 import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  createNativeStackNavigator,
-} from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/client/contexts";
 import { ProtectedRoute } from "@/client/components";
 import { MainTabNavigator } from "@/client/components/App";
-import {
-  SignUp,
-  Login,
-  Add,
-} from "@/client/screens";
+import { SignUp, Login, Add, EditProfile, Loading } from "@/client/screens";
 import {
   useFonts as useInterFonts,
   Inter_400Regular,
@@ -140,10 +134,18 @@ function App() {
                 headerShown: false,
               }}
             >
-              {() => (
-                <Add />
-              )}
+              {() => <Add />}
             </Stack.Screen>
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
+              options={{ headerShown: false, presentation: "modal" }}
+            />
+            <Stack.Screen
+              name="Loading"
+              component={Loading}
+              options={{ headerShown: false, animation: "ios_from_right" }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>

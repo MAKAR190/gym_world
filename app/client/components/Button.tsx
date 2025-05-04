@@ -23,7 +23,7 @@ interface VariantStylesProps {
 
 export const VARIANT_STYLES = {
   primary: ({ disabled, isLoading }: VariantStylesProps) =>
-    `${disabled ? "bg-primary-100 cursor-not-allowed" : "bg-primary-600"} ${
+    `${disabled ? "bg-primary-100 cursor-not-allowed" : "bg-primary-500"} ${
       isLoading ? "text-transparent cursor-wait" : "text-white"
     } flex w-full justify-center rounded-md px-5 py-4 shadow-sm active:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600`,
   secondary: ({ disabled, isLoading }: VariantStylesProps) =>

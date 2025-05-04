@@ -22,7 +22,7 @@ const Screen2 = () => {
   );
 };
 
-const HomeScreen = () => {
+const Home = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "screen1", title: "Screen 1" },
@@ -60,4 +60,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default Home;

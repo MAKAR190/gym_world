@@ -14,7 +14,7 @@ import { auth } from "@/client/hooks";
 import { SceneMap, TabView } from "react-native-tab-view";
 import { LoginForm, Title } from "@/client/components";
 import { LOGIN_FORM_MODULE } from "@/utils/constants";
-import LoadingScreen from "./Loading";
+import LoadingScreen from "../App/Loading";
 import { handleError } from "@/utils/helpers";
 import { LoginFormType } from "@/types/FormModels";
 
@@ -36,6 +36,8 @@ export default function LoginScreen() {
       setCurrentStep(0);
     }
   }, [isSigningIn, isSignInError]);
+
+
 
   return (
     <TabView
@@ -80,9 +82,7 @@ export default function LoginScreen() {
                         onSuccess: () => {
                           navigation.reset({
                             index: 0,
-                            routes: [
-                              { name: "Tabs", params: { screen: "Profile" } },
-                            ],
+                            routes: [{ name: "Tabs", params: { screen: "Profile" } }],
                           });
                         },
                         onError: (error: unknown) => {
