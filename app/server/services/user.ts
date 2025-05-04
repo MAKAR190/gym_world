@@ -62,6 +62,10 @@ export const updateUser = async ({
     );
 
     const fileExtension = formData.profile_picture.split(".").pop();
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    if (!fileExtension || !allowedExtensions.includes(fileExtension.toLowerCase())) {
+      throw AppErrorCodes.INVALID_FILE_TYPE;
+    }
     const fileName = `${sessionData.session.user.id}_${Date.now()}.${fileExtension}`;
 
     await supabase.storage
@@ -83,7 +87,7 @@ export const updateUser = async ({
     .update({
       ...formData,
       profile_picture: profilePictureUrl,
-      notifications: formData.notifications === "on",
+      notifications: formData.notifications,
     })
     .eq("id", sessionData.session.user.id);
 

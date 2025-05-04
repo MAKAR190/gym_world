@@ -36,7 +36,7 @@ export const EDIT_PROFILE_FORM_MODULE = (
     bio: user?.bio || "",
     profile_picture: user?.profile_picture || "",
     email: user?.email || "",
-    notifications: (user?.notifications ? "on" : "off") as "on" | "off",
+    notifications: user?.notifications || false,
     weightunit: user?.weightunit || "kg",
     heightunit: user?.heightunit || "cm",
     gender: user?.gender || "male",

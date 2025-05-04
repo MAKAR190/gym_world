@@ -66,7 +66,7 @@ export const EditProfileSchema = z.object({
   email: z
     .union([z.string().email("Invalid email address"), z.literal("")])
     .optional(),
-  notifications: z.enum(["on", "off"]).optional(),
+  notifications: SignUpSchema.shape.notifications.optional(),
   weightunit: SignUpSchema.shape.weightunit,
   heightunit: SignUpSchema.shape.heightunit,
   gender: SignUpSchema.shape.gender,

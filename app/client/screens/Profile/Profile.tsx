@@ -29,6 +29,7 @@ const Profile = () => {
               source={{ uri: user?.profile_picture }}
               alt="Profile"
               className="w-32 h-32 rounded-full border-2 border-blue-500"
+              onError={(e) => console.log("Image loading error:", e.nativeEvent.error)}
             />
             <View className="flex flex-col gap-1 items-center">
               {user?.username && (

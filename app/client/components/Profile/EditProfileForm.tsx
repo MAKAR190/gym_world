@@ -1,12 +1,17 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import {
-  InputField,
-  RadioField,
-  Button,
-} from "@/client/components";
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { InputField, RadioField, Button } from "@/client/components";
 import { EditProfileFormType } from "@/types/FormModels";
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { launchImageLibraryAsync, launchCameraAsync, requestMediaLibraryPermissionsAsync, requestCameraPermissionsAsync } from "expo-image-picker";
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import {
+  launchImageLibraryAsync,
+  launchCameraAsync,
+  requestMediaLibraryPermissionsAsync,
+  requestCameraPermissionsAsync,
+} from "expo-image-picker";
 import withZodForm, { InjectedProps } from "@/client/hocs/WithZodForm";
 
 const EditProfileFormComponent = ({
@@ -69,6 +74,10 @@ const EditProfileFormComponent = ({
                   const { status } =
                     await requestMediaLibraryPermissionsAsync();
                   if (status !== "granted") {
+                    Alert.alert(
+                      "Permission Required",
+                      "We need permission to access your photos to set a profile picture."
+                    );
                     return;
                   }
 
@@ -93,6 +102,10 @@ const EditProfileFormComponent = ({
                 onPress={async () => {
                   const { status } = await requestCameraPermissionsAsync();
                   if (status !== "granted") {
+                    Alert.alert(
+                      "Permission Required",
+                      "We need permission to access your photos to set a profile picture."
+                    );
                     return;
                   }
 
@@ -140,7 +153,7 @@ const EditProfileFormComponent = ({
             control={control}
             name="notifications"
             label="On"
-            value="on"
+            value={true}
             Icon={{
               Component: MaterialIcons,
               name: "notifications-on",
@@ -154,7 +167,7 @@ const EditProfileFormComponent = ({
             control={control}
             name="notifications"
             label="Off"
-            value="off"
+            value={false}
             Icon={{
               Component: MaterialIcons,
               name: "notifications-off",
@@ -278,4 +291,3 @@ const EditProfileForm = withZodForm<EditProfileFormType>(
 );
 
 export default EditProfileForm;
-

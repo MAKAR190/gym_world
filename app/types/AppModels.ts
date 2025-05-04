@@ -35,6 +35,7 @@ export enum AppErrorCodes {
   FETCH_WORKOUTS_FAILED = "FETCH_WORKOUTS_FAILED",
   FILE_NOT_FOUND = "FILE_NOT_FOUND",
   FILE_TOO_LARGE = "FILE_TOO_LARGE",
+  INVALID_FILE_TYPE = "INVALID_FILE_TYPE",
 }
 
 export const AppErrorMessages = {
@@ -54,4 +55,5 @@ export const AppErrorMessages = {
   [AppErrorCodes.FETCH_WORKOUTS_FAILED]: "Fetch workouts failed",
   [AppErrorCodes.FILE_NOT_FOUND]: "File not found",
   [AppErrorCodes.FILE_TOO_LARGE]: "File size exceeds 25MB limit",
+  [AppErrorCodes.INVALID_FILE_TYPE]: "Invalid file type",
 };

@@ -7,9 +7,9 @@ import { classNames } from "@/utils/helpers";
 type RadioProps = {
   label?: string;
   Icon?: IconType;
-  value: string;
-  selectedValue?: string;
-  onChange: (value: string) => void;
+  value: string | boolean;
+  selectedValue?: string | boolean;
+  onChange: (value: string | boolean) => void;
   disabled?: boolean;
   className?: string;
 };
@@ -24,7 +24,7 @@ export const Radio = ({
   className,
 }: RadioProps) => {
   return (
-    <View className={classNames("mb-2 ml-2 w-full min-w-28", className)}>
+    <View className={classNames("mb-2 ml-2 w-full min-w-28", className ?? "")}>
       <Pressable
         disabled={disabled}
         accessibilityRole="radio"
@@ -34,9 +34,9 @@ export const Radio = ({
         }}
         accessibilityLabel={label}
         className={`rounded-lg w-full items-center justify-center
-          ${
-            value === selectedValue ? "bg-primary-800" : "bg-primary-100"
-          } ${disabled ? "bg-gray-100" : ""}`}
+          ${value === selectedValue ? "bg-primary-800" : "bg-primary-100"} ${
+          disabled ? "bg-gray-100" : ""
+        }`}
         onPress={() => onChange(value)}
       >
         <View className="flex-col p-5 items-center justify-center gap-2">
@@ -53,8 +53,8 @@ export const Radio = ({
                 disabled
                   ? "text-gray-400"
                   : value === selectedValue
-                    ? "text-white"
-                    : "text-foreground"
+                  ? "text-white"
+                  : "text-foreground"
               }`}
             >
               {label}
@@ -73,6 +73,7 @@ type RadioFieldProps<T extends FieldValues> = Omit<
   name: Path<T>;
   control: Control<T>;
   Icon?: IconType;
+  value: string | boolean;
 };
 
 const RadioField = <T extends FieldValues>({

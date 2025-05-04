@@ -73,6 +73,9 @@ const EditProfile = () => {
           routes: [{ name: "Login" }],
         });
       },
+      onError: (error: unknown) => {
+        handleError(error as AppErrorCodes);
+      },
     });
   };
 
