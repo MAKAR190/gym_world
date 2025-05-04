@@ -89,7 +89,9 @@
       "reactNativeDirectoryCheck": {
         "listUnknownPackages": false,
         "exclude": [
-          "react-native-step-indicator"
+          "react-native-step-indicator",
+          "react-native-crypto",
+          "react-native-randombytes"
         ]
       }
     }
