@@ -13,11 +13,11 @@ import {
   SetupFormWithZod,
   QRCodeStep,
   NotificationsStep,
-} from "../components";
+} from "../../components";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList, AppErrorCodes } from "@/types/AppModels";
 import { auth } from "@/client/hooks";
-import LoadingScreen from "./Loading";
+import LoadingScreen from "../App/Loading";
 import { handleError } from "@/utils/helpers";
 
 const SignUp = () => {

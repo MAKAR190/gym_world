@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { signUp, signIn, getCurrentUser } from "@/server/services/auth";
 import { SignUpFormType, LoginFormType } from "@/types/FormModels";
-import { supabase } from "@/lib/supabase";
 
 const useSignUp = () => {
   return useMutation({
@@ -34,9 +34,33 @@ const useSession = () => {
 
   return {
     session,
-    user: user?.user,
+    user: user?.user ?? session?.user,
     isLoading,
   };
 };
 
-export default { useSignUp, useSignIn, useSession };
+const useRefreshSession = () => {
+  return useMutation({
+    mutationFn: () => supabase.auth.refreshSession(),
+  });
+};
+
+const useSignOut = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => supabase.auth.signOut(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.clear();
+    },
+  });
+};
+
+export default {
+  useSignUp,
+  useSignIn,
+  useSession,
+  useRefreshSession,
+  useSignOut,
+};

@@ -49,7 +49,32 @@ export const SignUpSchema = z.object({
   notifications: z.boolean(),
 });
 
+export const EditProfileSchema = z.object({
+  username: z
+    .union([
+      z.string().min(2, "Username must be at least 2 characters"),
+      z.literal(""),
+    ])
+    .optional(),
+  bio: z
+    .union([
+      z.string().min(2, "Bio must be at least 2 characters"),
+      z.literal(""),
+    ])
+    .optional(),
+  profile_picture: z.string().optional(),
+  email: z
+    .union([z.string().email("Invalid email address"), z.literal("")])
+    .optional(),
+  notifications: SignUpSchema.shape.notifications.optional(),
+  weightunit: SignUpSchema.shape.weightunit,
+  heightunit: SignUpSchema.shape.heightunit,
+  gender: SignUpSchema.shape.gender,
+  bodyweight: SignUpSchema.shape.bodyweight,
+  height: SignUpSchema.shape.height,
+});
 
 export type LoginFormType = z.infer<typeof LoginSchema>;
 export type ForgotPasswordFormType = z.infer<typeof ForgotPasswordSchema>;
 export type SignUpFormType = z.infer<typeof SignUpSchema>;
+export type EditProfileFormType = z.infer<typeof EditProfileSchema>;

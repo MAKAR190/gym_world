@@ -4,7 +4,7 @@ export function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
 }
 export function formDataToDatabase<
-  T extends Record<string, string | number | boolean>,
+  T extends Record<string, string | number | boolean>
 >(formData: T): Record<string, string | number | boolean> {
   const processedData: Record<string, string | number | boolean> = {};
 
@@ -22,7 +22,7 @@ export function formDataToDatabase<
 }
 
 export function databaseToFormData<
-  T extends Record<string, string | number | boolean>,
+  T extends Record<string, string | number | boolean>
 >(databaseData: T): Record<string, string | number | boolean> {
   const processedData: Record<string, string | number | boolean> = {};
 
@@ -45,4 +45,14 @@ export const isEmail = (input: string): boolean => {
 
 export function handleError(errorCode: AppErrorCodes) {
   Alert.alert("Error", AppErrorMessages[errorCode], [{ text: "OK" }]);
+}
+
+export function decode(base64: string): Uint8Array {
+  try {
+    const buffer = Buffer.from(base64, "base64");
+    return new Uint8Array(buffer);
+  } catch (error) {
+    console.error("Error decoding base64 string:", error);
+    return new Uint8Array(0);
+  }
 }

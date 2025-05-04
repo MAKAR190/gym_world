@@ -1,4 +1,10 @@
-import { LoginSchema, SignUpSchema } from "@/types/FormModels";
+import {
+  EditProfileSchema,
+  LoginSchema,
+  SignUpSchema,
+} from "@/types/FormModels";
+import { User as DatabaseUser } from "@/types/DatabaseModels";
+import { User as SupabaseUser } from "@supabase/auth-js";
 
 export const LOGIN_FORM_MODULE = {
   defaultValues: {
@@ -22,18 +28,36 @@ export const SETUP_FORM_MODULE = {
   validationSchema: SignUpSchema,
 };
 
+export const EDIT_PROFILE_FORM_MODULE = (
+  user: DatabaseUser | SupabaseUser
+) => ({
+  defaultValues: {
+    username: user?.username || "",
+    bio: user?.bio || "",
+    profile_picture: user?.profile_picture || "",
+    email: user?.email || "",
+    notifications: user?.notifications || false,
+    weightunit: user?.weightunit || "kg",
+    heightunit: user?.heightunit || "cm",
+    gender: user?.gender || "male",
+    bodyweight: String(user?.bodyweight) || "",
+    height: String(user?.height) || "",
+  },
+  validationSchema: EditProfileSchema,
+});
+
 export const WIZARD_STYLES = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: "#8D4DFF",
+  stepStrokeCurrentColor: "#3B82F6",
   stepStrokeWidth: 3,
-  stepStrokeFinishedColor: "#D2B8FF",
+  stepStrokeFinishedColor: "#93C5FD",
   stepStrokeUnFinishedColor: "#dedede",
-  separatorFinishedColor: "#D2B8FF",
+  separatorFinishedColor: "#93C5FD",
   separatorUnFinishedColor: "#dedede",
-  stepIndicatorFinishedColor: "#D2B8FF",
+  stepIndicatorFinishedColor: "#93C5FD",
   stepIndicatorUnFinishedColor: "#ffffff",
   stepIndicatorCurrentColor: "#ffffff",
   stepIndicatorLabelFontSize: 10,
@@ -41,9 +65,9 @@ export const WIZARD_STYLES = {
   stepIndicatorLabelCurrentColor: "transparent",
   stepIndicatorLabelFinishedColor: "transparent",
   stepIndicatorLabelUnFinishedColor: "transparent",
-  labelColor: "#D2B8FF",
+  labelColor: "#93C5FD",
   labelSize: 13,
-  currentStepLabelColor: "#8D4DFF",
+  currentStepLabelColor: "#3B82F6",
 };
 
 export const WIZARD_ROUTES = {
@@ -57,3 +81,6 @@ export const WIZARD_ROUTES = {
     { key: "notifications", title: "Notifications" },
   ],
 };
+
+export const DEFAULT_PROFILE_PICTURE =
+  "https://hkfdeydxmhdqjhqjhihr.supabase.co/storage/v1/object/sign/profile-pictures/default_avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzY5Njg5ZDJmLTAxN2YtNGNlMC1hMjRiLWM0OTEyNTk5ZWViMiJ9.eyJ1cmwiOiJwcm9maWxlLXBpY3R1cmVzL2RlZmF1bHRfYXZhdGFyLnBuZyIsImlhdCI6MTc0NjIwMDkxNywiZXhwIjo0ODk5ODAwOTE3fQ.gOlpWu8-eh_05jj2nhqTFXB0HTs6i7bd2thYZk1g3hw";
