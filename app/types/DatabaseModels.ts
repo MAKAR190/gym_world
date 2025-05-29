@@ -14,24 +14,19 @@ export interface User {
   created_at: Date;
   updated_at: Date;
   tokens: number;
-}
-
-export interface Achievement {
-  id: string;
-  user_id: string;
-  name: string;
-  description?: string;
-  earned_at: Date;
+  wallet_address: string | null;
+  push_token: string | null;
 }
 
 export interface Exercise {
   id: string;
-  workout_id: string;
   name: string;
-  image?: string;
-  metric: "kg" | "km";
-  time?: string;
-  reps?: number;
+  image?: string | null;
+  equipment: string;
+  secondary_muscles?: string | null;
+  instructions?: string | null;
+  body_part?: string | null;
+  target?: string | null;
 }
 
 export interface Workout {
@@ -41,5 +36,28 @@ export interface Workout {
   volume: number;
   sets: number;
   created_at: Date;
-  exercises: Exercise[];
+  photo: string | null;
+  likes: string[];
+}
+
+export interface Comment {
+  id: number;
+  workoutId: string;
+  userId: string;
+  content: string;
+  parentId?: number | null;
+  created_at: Date;
+  replies?: Comment[];
+}
+
+export interface Set {
+  id: string;
+  exercise_id: string;
+  reps_count?: number | null;
+  time?: number | null;
+  weight?: number | null;
+  weight_unit?: "kg" | "lbs";
+  distance_km?: number | null;
+  user_id: string;
+  workout_id: string;
 }

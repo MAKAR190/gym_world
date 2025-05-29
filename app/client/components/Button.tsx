@@ -12,8 +12,9 @@ import { IconType } from "@/types/Icon";
 export interface ButtonProps extends TouchableOpacityProps {
   isLoading?: boolean;
   variant?: "primary" | "secondary";
-  text: string;
+  text?: string;
   Icon?: IconType;
+  contentClassName?: string;
 }
 
 interface VariantStylesProps {
@@ -37,9 +38,10 @@ export const VARIANT_STYLES = {
 const Button = ({
   isLoading,
   className = "",
+  contentClassName = "",
   disabled,
   variant = "primary",
-  text,
+  text = "",
   Icon,
   ...rest
 }: ButtonProps) => {
@@ -63,7 +65,12 @@ const Button = ({
           size={20}
         />
       ) : (
-        <View className="flex-row items-center justify-center gap-3">
+        <View
+          className={classNames(
+            "flex-row items-center justify-center gap-3",
+            contentClassName
+          )}
+        >
           {Icon && (
             <View>
               {Icon.type === "expo" ? (
@@ -96,16 +103,18 @@ const Button = ({
               )}
             </View>
           )}
-          <Text
-            className={classNames(
-              variant === "primary"
+          {text && (
+            <Text
+              className={classNames(
+                variant === "primary"
                 ? "text-white font-inter font-semibold"
                 : "text-foreground font-geist font-semibold",
               "text-lg text-center"
             )}
           >
-            {text}
-          </Text>
+              {text}
+            </Text>
+          )}
         </View>
       )}
     </TouchableOpacity>

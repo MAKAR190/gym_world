@@ -10,4 +10,5 @@ export { default as SetupFormWithZod } from "./SignUp/SetupFormStep";
 export { default as QRCodeStep } from "./SignUp/QRStep";
 export { default as NotificationsStep } from "./SignUp/NotificationsStep";
 export { default as ProtectedRoute } from "./ProtectedRoute";
-export { DeactivateAccountDialog } from "./Dialogs";
+export { AlertDialog } from "./Dialogs";
+export { default as ExerciseList } from "./Add/ExerciseList";

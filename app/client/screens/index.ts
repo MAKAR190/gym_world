@@ -1,9 +1,12 @@
 export { default as Home } from "./Home";
-export { default as Explore } from "./Explore";
-export { default as Add } from "./Add";
-export { default as Marketplace } from "./Marketplace";
 export { default as Profile } from "./Profile/Profile";
-export { default as EditProfile } from "./Profile/EditProfile";
-export { default as SignUp } from "./Auth/SignUp";
+export { default as Add } from "./Add/Add";
 export { default as Login } from "./Auth/Login";
+export { default as SignUp } from "./Auth/SignUp";
+export { default as EditProfile } from "./Profile/EditProfile";
 export { default as Loading } from "./App/Loading";
+export { default as Workout } from "./Add/Workout";
+export { default as Exercises } from "./Add/Exercises";
+export { default as WorkoutHistory } from "./Profile/WorkoutHistory";
+export { default as WorkoutStats } from "./Profile/WorkoutStats";
+export { default as Comments } from "./Comments";

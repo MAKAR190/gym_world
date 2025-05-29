@@ -2,17 +2,23 @@ import React from "react";
 import { View, Text, Modal, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-interface DeactivateAccountDialogProps {
-  onDeactivate: () => void;
+interface AlertDialogProps {
+  title: string;
+  description: string;
+  confirmText: string;
+  onConfirm: () => void;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-export const DeactivateAccountDialog = ({
-  onDeactivate,
+export const AlertDialog = ({
+  title,
+  description,
+  confirmText,
+  onConfirm,
   open,
   setOpen,
-}: DeactivateAccountDialogProps) => {
+}: AlertDialogProps) => {
   return (
     <Modal
       transparent={true}
@@ -28,25 +34,19 @@ export const DeactivateAccountDialog = ({
             </View>
           </View>
           <View className="text-center mb-4">
-            <Text className="text-lg font-semibold text-gray-900">
-              Deactivate account
-            </Text>
-            <Text className="text-sm text-gray-500 mt-2">
-              Are you sure you want to deactivate your account? All of your data
-              will be permanently removed from our servers forever. This action
-              cannot be undone.
-            </Text>
+            <Text className="text-lg font-semibold text-gray-900">{title}</Text>
+            <Text className="text-sm text-gray-500 mt-2">{description}</Text>
           </View>
           <View className="flex-row justify-between mt-4">
             <TouchableOpacity
               className="bg-red-600 px-4 py-2 rounded-md"
               onPress={() => {
                 setOpen(false);
-                onDeactivate();
+                onConfirm();
               }}
             >
               <Text className="text-background text-center text-sm font-semibold">
-                Deactivate
+                {confirmText}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

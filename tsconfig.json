@@ -26,5 +26,5 @@
     "**/*.tsx",
     "nativewind-env.d.ts",
     ".local/ForgotPassword.tsx"
-  ]
+, "hardhat.config.ts"  ]
 }

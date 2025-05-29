@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/AppModels";
 import { useAuth } from "@/client/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -14,12 +15,23 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
-    if (!isLoading && !session) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
-      });
-    }
+    const checkSession = async () => {
+      if (!isLoading && !session) {
+        const {
+          data: { session: currentSession },
+        } = await supabase.auth.getSession();
+        if (!currentSession) {
+          setTimeout(() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Login" }],
+            });
+          }, 0);
+        }
+      }
+    };
+
+    checkSession();
   }, [session, isLoading, navigation]);
 
   if (isLoading) {

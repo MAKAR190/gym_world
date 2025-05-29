@@ -7,19 +7,35 @@
     "icon": "./app/client/assets/logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "scheme": "gymworld",
     "splash": {
       "image": "./app/client/assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.makkentoshh.gymworld",
+      "associatedDomains": ["applinks:metamask.app.link"]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/client/assets/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.makkentoshh.gymworld",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "gymworld"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "favicon": "./app/client/assets/favicon.png",
@@ -27,13 +43,19 @@
     },
     "plugins": [
       [
-        "@sentry/react-native/expo",
+        "expo-build-properties",
         {
-          "url": "https://sentry.io/",
-          "project": "react-native",
-          "organization": "student-9tl"
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "98e5aaa3-1656-4cb0-9bc9-8ae8a2ad19eb"
+      }
+    },
+    "owner": "makkentoshh"
   }
 }

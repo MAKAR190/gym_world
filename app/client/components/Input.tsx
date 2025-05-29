@@ -27,8 +27,8 @@ type InputProps = {
   placeholder?: string;
   maxLength?: number;
   errorMessage?: string;
-  value: string;
-  onChange: (text: string) => void;
+  value?: string;
+  onChange?: (text: string) => void;
   Icon?: IconType;
   saveErrorSpace?: boolean;
   inputMode?:
@@ -42,7 +42,7 @@ type InputProps = {
   style?: object;
 };
 
-const Input = React.forwardRef<TextInput, InputProps>(
+export const Input = React.forwardRef<TextInput, InputProps>(
   (
     {
       id,
@@ -60,17 +60,19 @@ const Input = React.forwardRef<TextInput, InputProps>(
     },
     ref
   ) => {
-    const handleChange = React.useCallback(
-      (text: string) => {
-        onChange(text);
-      },
-      [onChange]
+    const inputClassName = React.useMemo(
+      () =>
+        `w-full rounded-lg bg-background focus:border-primary-600 px-3 py-2.5 font-geist text-md text-foreground border ${
+          errorMessage ? "border-red-600" : "border-secondary-300"
+        } ${suffix ? "pr-10" : ""}`,
+      [errorMessage, suffix]
     );
 
     return (
       <View className="relative">
         <View className="flex-row items-center relative">
           <TextInput
+            key="text-input"
             ref={ref}
             testID={id}
             autoComplete={autoComplete as AutoCompleteType}
@@ -78,10 +80,8 @@ const Input = React.forwardRef<TextInput, InputProps>(
             keyboardType={inputMode as KeyboardTypeOptions}
             placeholder={placeholder}
             value={value}
-            onChangeText={handleChange}
-            className={`w-full rounded-lg bg-background focus:border-primary-600 px-3 py-2.5 font-geist text-md text-foreground border ${
-              errorMessage ? "border-red-600" : "border-secondary-300"
-            } ${suffix ? "pr-10" : ""}`}
+            onChangeText={onChange}
+            className={inputClassName}
             style={style}
             maxLength={maxLength}
           />

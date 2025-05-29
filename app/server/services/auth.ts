@@ -26,6 +26,8 @@ export const signUp = async ({
     email: isEmailInput ? formData.emailOrUsername : null,
     profile_picture: DEFAULT_PROFILE_PICTURE,
     bio: "No bio, just working out",
+    notifications: formData.notifications,
+    wallet_address: null,
     provider,
   };
 

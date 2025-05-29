@@ -1,10 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home, Explore, Marketplace, Profile } from "@/client/screens";
+import { Home, Profile, Add } from "@/client/screens";
 import {
   TabBarHomeIcon,
-  TabBarExploreIcon,
   TabBarAddIcon,
-  TabBarMarketplaceIcon,
   TabBarProfileIcon,
 } from "@/client/assets/icons/expo-icons";
 import { TabBarButton, AddButton } from "./TabBarComponents";
@@ -38,6 +36,8 @@ const MainTabNavigator = () => {
           tabBarButton: TabBarButton,
         }}
       />
+      {/* // TODO: Add Explore Screen
+      
       <Tab.Screen
         name="Explore"
         component={Explore}
@@ -49,9 +49,9 @@ const MainTabNavigator = () => {
           },
           tabBarButton: TabBarButton,
         }}
-      />
+      /> */}
       <Tab.Screen
-        name="AddButton"
+        name="Add"
         options={{
           tabBarIcon: ({ focused }: { focused: boolean }) =>
             TabBarAddIcon({ focused }),
@@ -64,20 +64,7 @@ const MainTabNavigator = () => {
           },
           tabBarButton: AddButton,
         }}
-      >
-        {() => null}
-      </Tab.Screen>
-      <Tab.Screen
-        name="Marketplace"
-        component={Marketplace}
-        options={{
-          tabBarIcon: ({ focused }: { focused: boolean }) =>
-            TabBarMarketplaceIcon({ focused }),
-          tabBarIconStyle: {
-            marginTop: 12,
-          },
-          tabBarButton: TabBarButton,
-        }}
+        component={Add}
       />
       <Tab.Screen
         name="Profile"

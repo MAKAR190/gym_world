@@ -62,11 +62,16 @@ export const updateUser = async ({
     );
 
     const fileExtension = formData.profile_picture.split(".").pop();
-    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    if (!fileExtension || !allowedExtensions.includes(fileExtension.toLowerCase())) {
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+    if (
+      !fileExtension ||
+      !allowedExtensions.includes(fileExtension.toLowerCase())
+    ) {
       throw AppErrorCodes.INVALID_FILE_TYPE;
     }
-    const fileName = `${sessionData.session.user.id}_${Date.now()}.${fileExtension}`;
+    const fileName = `${
+      sessionData.session.user.id
+    }_${Date.now()}.${fileExtension}`;
 
     await supabase.storage
       .from("profile-pictures")
@@ -89,6 +94,19 @@ export const updateUser = async ({
       profile_picture: profilePictureUrl,
       notifications: formData.notifications,
     })
+    .eq("id", sessionData.session.user.id);
+
+  if (error) throw AppErrorCodes.UPDATE_USER_FAILED;
+  return data;
+};
+
+export const updateUserWalletAddress = async (walletAddress: string | null) => {
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData.session?.user.id) return { user: null };
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ wallet_address: walletAddress })
     .eq("id", sessionData.session.user.id);
 
   if (error) throw AppErrorCodes.UPDATE_USER_FAILED;

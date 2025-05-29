@@ -80,6 +80,10 @@ export const WIZARD_ROUTES = {
     { key: "qrcode", title: "QR Code" },
     { key: "notifications", title: "Notifications" },
   ],
+  workout: [
+    { key: "workout", title: "Workout" },
+    { key: "exercises", title: "Exercises" },
+  ],
 };
 
 export const DEFAULT_PROFILE_PICTURE =

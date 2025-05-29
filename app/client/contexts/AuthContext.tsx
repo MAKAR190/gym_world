@@ -14,7 +14,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const { session, user, isLoading } = auth.useSession();
 
   return (
-    <AuthContext.Provider value={{ session: session ?? null, user: user ?? null, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        session: session ?? null,
+        user: user ?? null,
+        isLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

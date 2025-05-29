@@ -152,7 +152,7 @@ const SetupFormStep = ({
           type="password"
         />
       </View>
-      <View className="mb-4">
+      <View className="mb-10">
         <View className="flex-1">
           <Button variant="secondary" onPress={handleFormSubmit} text="Next" />
         </View>

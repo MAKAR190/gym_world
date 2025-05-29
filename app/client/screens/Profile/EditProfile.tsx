@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView } from "react-native";
-import {
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   Title,
   Button,
-  DeactivateAccountDialog,
+  AlertDialog as DeactivateAccountDialog,
 } from "@/client/components";
 import { EditProfileFormType } from "@/types/FormModels";
 import { EDIT_PROFILE_FORM_MODULE } from "@/utils/constants";
@@ -19,7 +17,6 @@ import { deleteUser, updateUser } from "@/server/services/user";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleError } from "@/utils/helpers";
 import EditProfileForm from "@/client/components/Profile/EditProfileForm";
-
 
 const EditProfile = () => {
   const { user, isLoading } = auth.useSession();
@@ -67,43 +64,31 @@ const EditProfile = () => {
 
   const handleSignOut = () => {
     signOutMutation(undefined, {
-      onSuccess: () => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Login" }],
-        });
-      },
       onError: (error: unknown) => {
         handleError(error as AppErrorCodes);
       },
     });
   };
 
-  useEffect(() => {
-    if (
-      isUpdatingUser ||
-      isDeletingUser ||
-      isRefreshingSession ||
-      isSigningOut
-    ) {
-      navigation.navigate("Loading");
-    }
-  }, [
-    isUpdatingUser,
-    isDeletingUser,
-    isRefreshingSession,
-    isSigningOut,
-    navigation,
-  ]);
-
-  if (isLoading || !user) return <Loading />;
+  if (
+    isLoading ||
+    !user ||
+    isUpdatingUser ||
+    isDeletingUser ||
+    isRefreshingSession
+  ) {
+    return <Loading />;
+  }
 
   return (
     <>
       <DeactivateAccountDialog
-        onDeactivate={() => deleteUserMutation()}
         open={deactivateDialogOpen}
         setOpen={setDeactivateDialogOpen}
+        title="Deactivate Account"
+        description="Are you sure you want to deactivate your account? All of your data will be permanently removed from our servers forever. This action cannot be undone."
+        confirmText="Deactivate"
+        onConfirm={() => deleteUserMutation()}
       />
       <ScrollView className="p-4 space-y-12 bg-background w-full">
         <View className="mt-10 pb-12 w-full">
