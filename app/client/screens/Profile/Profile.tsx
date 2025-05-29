@@ -145,7 +145,7 @@ const WalletScene = () => {
               <Text className="text-gray-600 text-sm">Token Balance</Text>
               <View className="flex flex-row items-center mb-10">
                 <Text className="text-2xl font-bold">
-                  {Number(tokenBalance) * 10 ** 18} GWC
+                  {Number(tokenBalance)} GWC
                 </Text>
                 <GwcLogo width={32} height={32} style={{ marginLeft: 8 }} />
               </View>
