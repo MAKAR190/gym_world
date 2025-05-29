@@ -24,7 +24,7 @@
     "@react-navigation/bottom-tabs": "^7.3.2",
     "@react-navigation/native": "^7.0.18",
     "@react-navigation/native-stack": "^7.3.9",
-    "@sentry/react-native": "~6.10.0",
+    "@sentry/react-native": "^6.14.0",
     "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-query": "^5.72.2",
     "@thirdweb-dev/react-native": "^0.8.0",
@@ -131,7 +131,11 @@
         "exclude": [
           "react-native-step-indicator",
           "react-native-crypto",
-          "react-native-randombytes"
+          "react-native-randombytes",
+          "react-native-background-timer",
+          "react-native-chart-kit",
+          "react-native-charts-wrapper",
+          "react-native-google-fit"
         ]
       }
     }
