@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView } from "react-native";
-import {
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   Title,
   Button,
@@ -19,7 +17,6 @@ import { deleteUser, updateUser } from "@/server/services/user";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleError } from "@/utils/helpers";
 import EditProfileForm from "@/client/components/Profile/EditProfileForm";
-
 
 const EditProfile = () => {
   const { user, isLoading } = auth.useSession();
@@ -67,36 +64,21 @@ const EditProfile = () => {
 
   const handleSignOut = () => {
     signOutMutation(undefined, {
-      onSuccess: () => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Login" }],
-        });
-      },
       onError: (error: unknown) => {
         handleError(error as AppErrorCodes);
       },
     });
   };
 
-  useEffect(() => {
-    if (
-      isUpdatingUser ||
-      isDeletingUser ||
-      isRefreshingSession ||
-      isSigningOut
-    ) {
-      navigation.navigate("Loading");
-    }
-  }, [
-    isUpdatingUser,
-    isDeletingUser,
-    isRefreshingSession,
-    isSigningOut,
-    navigation,
-  ]);
-
-  if (isLoading || !user) return <Loading />;
+  if (
+    isLoading ||
+    !user ||
+    isUpdatingUser ||
+    isDeletingUser ||
+    isRefreshingSession
+  ) {
+    return <Loading />;
+  }
 
   return (
     <>

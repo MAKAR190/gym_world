@@ -5,9 +5,6 @@ import { SignUpFormType, LoginFormType } from "@/types/FormModels";
 import { useWallet } from "@/client/contexts/WalletContext";
 import { useEffect } from "react";
 import { User as DatabaseUser } from "@/types/DatabaseModels";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "@/types/AppModels";
 
 const useSignUp = () => {
   return useMutation({
@@ -17,27 +14,15 @@ const useSignUp = () => {
 
 const useSignIn = () => {
   const queryClient = useQueryClient();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return useMutation({
     mutationFn: (formData: LoginFormType) => signIn({ data: formData }),
-    onSuccess: () => {
+    onSuccess: async () => {
       // Invalidate queries to refresh user data
-      queryClient.invalidateQueries({ queryKey: ["session"] });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      // Navigate to Login screen first, then to Tabs
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
-      });
-      // Use setTimeout to ensure navigation happens after the stack is ready
-      setTimeout(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Tabs", params: { screen: "Profile" } }],
-        });
-      }, 0);
+      await queryClient.invalidateQueries({ queryKey: ["session"] });
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      // Wait a bit for the session to be updated
+      await new Promise((resolve) => setTimeout(resolve, 100));
     },
   });
 };
@@ -54,9 +39,14 @@ const useSafeWallet = () => {
 const useSession = () => {
   const wallet = useSafeWallet();
 
-  const { data: session, isLoading } = useQuery({
+  const {
+    data: session,
+    isLoading: isSessionLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["session"],
     queryFn: async () => {
+      console.log("Fetching session...");
       const {
         data: { session: sessionData },
         error,
@@ -67,21 +57,34 @@ const useSession = () => {
         return null;
       }
 
+      console.log("Session fetch result:", sessionData);
       return sessionData;
     },
-    gcTime: Infinity,
-    staleTime: Infinity,
+    gcTime: 0,
+    staleTime: 0,
     retry: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
-  const { data: user } = useQuery({
+  const { data: user, isLoading: isUserLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
     enabled: !!session,
-    gcTime: Infinity,
-    staleTime: Infinity,
+    gcTime: 0,
+    staleTime: 0,
     retry: false,
   });
+
+  // Log session state changes
+  useEffect(() => {
+    console.log("Session state changed:", { session, isSessionLoading });
+  }, [session, isSessionLoading]);
+
+  // Force refetch session when component mounts
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   useEffect(() => {
     if (!wallet) return;
@@ -101,7 +104,8 @@ const useSession = () => {
   return {
     session,
     user: user?.user ?? session?.user,
-    isLoading,
+    isLoading: isSessionLoading || (!!session && isUserLoading),
+    refetch,
   };
 };
 
@@ -122,24 +126,53 @@ const useRefreshSession = () => {
 
 const useSignOut = () => {
   const queryClient = useQueryClient();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return useMutation({
     mutationFn: async () => {
+      console.log("Starting sign out process...");
+
+      // Sign out from Supabase first
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["session"] });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      // Only clear the cache when explicitly signing out
+      if (error) {
+        console.error("Supabase sign out error:", error);
+        throw error;
+      }
+
+      console.log("Supabase sign out successful");
+
+      // Clear all queries and cache
       queryClient.clear();
-      // Navigate to Login screen
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
+      console.log("Query cache cleared");
+
+      // Explicitly set session and user data to null
+      queryClient.setQueryData(["session"], null);
+      queryClient.setQueryData(["user"], null);
+      console.log("Session and user data set to null");
+
+      // Force refetch the session to ensure state is updated
+      await queryClient.refetchQueries({
+        queryKey: ["session"],
+        type: "active",
+        exact: true,
       });
+      console.log("Session refetched");
+
+      // Additional check to ensure session is null
+      const {
+        data: { session: finalSession },
+      } = await supabase.auth.getSession();
+      console.log("Final session check:", finalSession);
+
+      if (finalSession) {
+        console.error("Session still exists after sign out!");
+        // Force clear the session again
+        queryClient.setQueryData(["session"], null);
+      }
+
+      // Force a refetch after a short delay to ensure state is updated
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ["session"] });
+      }, 100);
     },
   });
 };

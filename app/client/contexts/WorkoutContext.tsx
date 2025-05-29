@@ -153,7 +153,6 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({
     async (photoUrl?: string) => {
       try {
         setIsLoading(true);
-        navigation.navigate("Loading");
 
         const { user } = await getCurrentUser();
         if (!user) {

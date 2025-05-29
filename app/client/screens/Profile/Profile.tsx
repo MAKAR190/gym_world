@@ -53,16 +53,12 @@ const ProfileScene = ({
             )}
             <Text className="text-gray-500">{user?.bio}</Text>
           </View>
-          <View className="mt-3 flex flex-row justify-between w-full">
+          <View className="mt-3 flex flex-row justify-center gap-10 w-full">
             <View className="flex items-center">
               <Text className="text-3xl font-bold">
                 {user_workouts?.length || 0}
               </Text>
               <Text className="text-gray-600 text-sm">Workouts</Text>
-            </View>
-            <View className="flex items-center ml-3">
-              <Text className="text-3xl font-bold">{user?.tokens || 0}</Text>
-              <Text className="text-gray-600 text-sm">Tokens</Text>
             </View>
             <View className="flex items-center">
               <Text className="text-3xl font-bold">

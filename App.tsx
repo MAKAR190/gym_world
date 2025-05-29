@@ -1,8 +1,12 @@
 import "@walletconnect/react-native-compat";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { AuthProvider } from "@/client/contexts";
 import { WalletProvider } from "@/client/contexts/WalletContext";
 import { ProtectedRoute } from "@/client/components";
@@ -11,7 +15,6 @@ import {
   SignUp,
   Login,
   EditProfile,
-  Loading,
   Workout,
   Exercises,
   WorkoutHistory,
@@ -49,7 +52,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/AppModels";
 import { auth } from "@/client/hooks";
 import * as Device from "expo-device";
-
+import Loading from "@/client/screens/App/Loading";
 // Initialize NetInfo for WalletConnect
 // @ts-ignore
 global.NetInfo = {
@@ -107,6 +110,81 @@ export const scheduleTestNotification = async () => {
     console.log("Test notification scheduled!");
   } catch (error) {
     console.error("Error scheduling test notification:", error);
+  }
+};
+
+// Test notification functions
+export const scheduleWorkoutCompletionNotification = async () => {
+  if (!Device.isDevice) {
+    console.log("Must use physical device for Push Notifications");
+    return;
+  }
+
+  try {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== "granted") {
+      console.log("Failed to get push token for push notification!");
+      return;
+    }
+
+    // Schedule a workout completion notification
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Workout Completed! 🎉",
+        body: "Great job! You've earned 50 GWC tokens for completing your workout.",
+        data: { type: "achievement" },
+      },
+      trigger: null,
+    });
+
+    console.log("Workout completion notification scheduled!");
+  } catch (error) {
+    console.error("Error scheduling workout completion notification:", error);
+  }
+};
+
+export const scheduleWorkoutLikeNotification = async () => {
+  if (!Device.isDevice) {
+    console.log("Must use physical device for Push Notifications");
+    return;
+  }
+
+  try {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== "granted") {
+      console.log("Failed to get push token for push notification!");
+      return;
+    }
+
+    // Schedule a workout like notification
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "New Like! ❤️",
+        body: "Someone liked your workout! Keep up the great work!",
+        data: { type: "achievement" },
+      },
+      trigger: null,
+    });
+
+    console.log("Workout like notification scheduled!");
+  } catch (error) {
+    console.error("Error scheduling workout like notification:", error);
   }
 };
 
@@ -175,9 +253,82 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Create a component to handle the initial app state
+// Create a separate component to handle auth state
+const AuthStateManager = ({ children }: { children: React.ReactNode }) => {
+  const { session, isLoading } = auth.useSession();
+  const queryClient = useQueryClient();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const prevSessionRef = useRef(session);
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  // Handle session changes
+  useEffect(() => {
+    // Only handle navigation if we had a session before and now we don't
+    if (!isLoading && prevSessionRef.current && !session) {
+      console.log("Session lost, initiating cleanup sequence");
+
+      // Force a UI update
+      setForceUpdate((prev) => prev + 1);
+
+      // Clear cache immediately
+      queryClient.clear();
+
+      // Reset all queries
+      queryClient.resetQueries();
+
+      // Force refetch session
+      queryClient.refetchQueries({ queryKey: ["session"] });
+
+      // Reset navigation after a short delay
+      setTimeout(() => {
+        console.log("Resetting navigation to Login");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Login" }],
+        });
+      }, 100);
+    }
+
+    // Update the ref with current session
+    prevSessionRef.current = session;
+  }, [session, isLoading, queryClient, navigation]);
+
+  // Force re-render when session changes
+  useEffect(() => {
+    if (!session) {
+      console.log("No session, forcing re-render");
+      setForceUpdate((prev) => prev + 1);
+    }
+  }, [session]);
+
+  if (isLoading) {
+    console.log("AuthStateManager: Loading state");
+    return <Loading />;
+  }
+
+  console.log(
+    "AuthStateManager: Rendering with session:",
+    !!session,
+    "forceUpdate:",
+    forceUpdate
+  );
+  return <>{children}</>;
+};
+
 const AppNavigator = () => {
   const { session, isLoading } = auth.useSession();
+  const [key, setKey] = useState(0);
+
+  // Force re-render when session changes
+  useEffect(() => {
+    if (!session) {
+      console.log("AppNavigator: No session, forcing re-render");
+      setKey((prev) => prev + 1);
+    }
+  }, [session]);
+
+  console.log("AppNavigator render:", { session, isLoading, key });
 
   if (isLoading) {
     return <Loading />;
@@ -185,6 +336,7 @@ const AppNavigator = () => {
 
   return (
     <Stack.Navigator
+      key={key}
       screenOptions={{
         headerShown: false,
       }}
@@ -210,11 +362,16 @@ const AppNavigator = () => {
           </Stack.Screen>
           <Stack.Screen
             name="EditProfile"
-            component={EditProfile}
             options={{
               headerShown: false,
             }}
-          />
+          >
+            {() => (
+              <ProtectedRoute>
+                <EditProfile />
+              </ProtectedRoute>
+            )}
+          </Stack.Screen>
           <Stack.Screen
             name="Workout"
             options={{
@@ -229,39 +386,52 @@ const AppNavigator = () => {
           </Stack.Screen>
           <Stack.Screen
             name="Exercises"
-            component={Exercises}
             options={{
               headerShown: false,
             }}
-          />
+          >
+            {() => (
+              <ProtectedRoute>
+                <Exercises />
+              </ProtectedRoute>
+            )}
+          </Stack.Screen>
           <Stack.Screen
             name="WorkoutHistory"
-            component={WorkoutHistory}
             options={{
               headerShown: false,
             }}
-          />
+          >
+            {() => (
+              <ProtectedRoute>
+                <WorkoutHistory />
+              </ProtectedRoute>
+            )}
+          </Stack.Screen>
           <Stack.Screen
             name="WorkoutStats"
-            component={WorkoutStats}
             options={{
               headerShown: false,
             }}
-          />
+          >
+            {() => (
+              <ProtectedRoute>
+                <WorkoutStats />
+              </ProtectedRoute>
+            )}
+          </Stack.Screen>
           <Stack.Screen
             name="Comments"
-            component={Comments}
             options={{
               headerShown: false,
             }}
-          />
-          <Stack.Screen
-            name="Loading"
-            component={Loading}
-            options={{
-              headerShown: false,
-            }}
-          />
+          >
+            {() => (
+              <ProtectedRoute>
+                <Comments />
+              </ProtectedRoute>
+            )}
+          </Stack.Screen>
         </>
       )}
     </Stack.Navigator>
@@ -301,7 +471,9 @@ export default function App() {
     <NavigationContainer>
       <AppProviders>
         <NotificationHandler />
-        <AppNavigator />
+        <AuthStateManager>
+          <AppNavigator />
+        </AuthStateManager>
       </AppProviders>
     </NavigationContainer>
   );
