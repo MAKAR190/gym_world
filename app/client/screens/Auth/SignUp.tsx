@@ -135,7 +135,7 @@ const SignUp = () => {
         renderTabBar={() => null}
       />
       {currentStep > 0 && currentStep < WIZARD_ROUTES.signUp.length && (
-        <View className="px-4 mb-4 flex-row w-full">
+        <View className="px-4 mb-20 flex-row w-full">
           <View className="flex-1 mr-4">
             <Button
               variant="secondary"

@@ -1,5 +1,7 @@
 import { Alert } from "react-native";
 import { AppErrorCodes, AppErrorMessages } from "@/types/AppModels";
+import { Buffer } from "buffer";
+
 export function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
 }
@@ -56,3 +58,16 @@ export function decode(base64: string): Uint8Array {
     return new Uint8Array(0);
   }
 }
+
+export const calculateReward = (
+  reps: number,
+  weight: number,
+  time: number,
+  distance: number
+): number => {
+  const repsReward = reps * (1000 * 10 ** 18);
+  const weightReward = weight * (2000 * 10 ** 18);
+  const timeReward = Math.floor(time / 60) * (5000 * 10 ** 18);
+  const distanceReward = Math.floor(distance / 1000) * (10000 * 10 ** 18);
+  return repsReward + weightReward + timeReward + distanceReward;
+};

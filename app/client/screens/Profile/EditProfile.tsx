@@ -6,7 +6,7 @@ import {
 import {
   Title,
   Button,
-  DeactivateAccountDialog,
+  AlertDialog as DeactivateAccountDialog,
 } from "@/client/components";
 import { EditProfileFormType } from "@/types/FormModels";
 import { EDIT_PROFILE_FORM_MODULE } from "@/utils/constants";
@@ -101,9 +101,12 @@ const EditProfile = () => {
   return (
     <>
       <DeactivateAccountDialog
-        onDeactivate={() => deleteUserMutation()}
         open={deactivateDialogOpen}
         setOpen={setDeactivateDialogOpen}
+        title="Deactivate Account"
+        description="Are you sure you want to deactivate your account? All of your data will be permanently removed from our servers forever. This action cannot be undone."
+        confirmText="Deactivate"
+        onConfirm={() => deleteUserMutation()}
       />
       <ScrollView className="p-4 space-y-12 bg-background w-full">
         <View className="mt-10 pb-12 w-full">

@@ -1,0 +1,13 @@
+{
+  "name": "Gym World Coin",
+  "symbol": "GWC",
+  "description": "Reward token for completing workouts in Gym World",
+  "image": "https://green-glad-lemming-935.mypinata.cloud/ipfs/bafkreicneoslpjfe3hpozp3b5rfbj3hoxi4mwrrulnd7ckjemo2xg7jmr4",
+  "external_url": "https://gymworld.com",
+  "attributes": [
+    {
+      "trait_type": "Category",
+      "value": "Fitness Rewards"
+    }
+  ]
+}

@@ -39,3 +39,30 @@ yarn-error.*
 *.tsbuildinfo
 
 .env.local
+
+node_modules
+.env
+
+# Hardhat files
+/app/hardhat/cache
+/app/hardhat/artifacts
+
+# TypeChain files
+/app/hardhat/typechain
+/app/hardhat/typechain-types
+
+# solidity-coverage files
+/app/hardhat/coverage
+/app/hardhat/coverage.json
+
+# Hardhat Ignition default folder for deployments against a local node
+/app/hardhat/ignition/deployments/chain-31337
+
+# Android
+/android/
+
+# iOS
+/ios/
+
+# Web
+/web/
