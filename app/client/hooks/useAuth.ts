@@ -2,10 +2,8 @@ import { supabase } from "@/lib/supabase";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { signUp, signIn, getCurrentUser } from "@/server/services/auth";
 import { SignUpFormType, LoginFormType } from "@/types/FormModels";
-import { useWallet } from "@/client/contexts/WalletContext";
 import { useEffect } from "react";
-import { User as DatabaseUser } from "@/types/DatabaseModels";
-
+    
 const useSignUp = () => {
   return useMutation({
     mutationFn: (formData: SignUpFormType) => signUp({ data: formData }),
@@ -18,26 +16,15 @@ const useSignIn = () => {
   return useMutation({
     mutationFn: (formData: LoginFormType) => signIn({ data: formData }),
     onSuccess: async () => {
-      // Invalidate queries to refresh user data
       await queryClient.invalidateQueries({ queryKey: ["session"] });
       await queryClient.invalidateQueries({ queryKey: ["user"] });
-      // Wait a bit for the session to be updated
       await new Promise((resolve) => setTimeout(resolve, 100));
     },
   });
 };
 
-// Custom hook to safely use wallet context
-const useSafeWallet = () => {
-  try {
-    return useWallet();
-  } catch {
-    return null;
-  }
-};
 
 const useSession = () => {
-  const wallet = useSafeWallet();
 
   const {
     data: session,
@@ -81,25 +68,10 @@ const useSession = () => {
     console.log("Session state changed:", { session, isSessionLoading });
   }, [session, isSessionLoading]);
 
-  // Force refetch session when component mounts
   useEffect(() => {
     refetch();
   }, [refetch]);
 
-  useEffect(() => {
-    if (!wallet) return;
-
-    const dbUser = user?.user as DatabaseUser | null;
-    const isWalletConnected = session?.user?.user_metadata?.wallet_connected;
-
-    if (
-      dbUser?.wallet_address &&
-      !wallet.walletAddress &&
-      isWalletConnected !== false
-    ) {
-      wallet.setWalletAddress(dbUser.wallet_address);
-    }
-  }, [user?.user, wallet, session?.user?.user_metadata?.wallet_connected]);
 
   return {
     session,

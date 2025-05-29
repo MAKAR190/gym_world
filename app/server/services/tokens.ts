@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import { getCurrentUser } from "./auth";
 import { AppErrorCodes } from "@/types/AppModels";
-import WorkoutRewardsArtifact from "../../hardhat/artifacts/contracts/WorkoutRewards.sol/WorkoutRewards.json";
-import GWCTokenArtifact from "../../hardhat/artifacts/contracts/GWCToken.sol/GWCToken.json";
+import WorkoutRewardsArtifact from "../../assets/contracts/WorkoutRewards.json";
+import GWCTokenArtifact from "../../assets/contracts/GWCToken.json";
 
 const WORKOUT_REWARDS_ADDRESS = process.env.EXPO_PUBLIC_WORKOUT_REWARDS_ADDRESS;
 const GWC_TOKEN_ADDRESS = process.env.EXPO_PUBLIC_GWC_TOKEN_ADDRESS;
@@ -166,6 +166,10 @@ export const rewardWorkout = async ({
         "Debug - Contract token balance:",
         ethers.utils.formatEther(contractTokenBalance)
       );
+      console.log("Debug - Contract addresses:", {
+        workoutRewards: WORKOUT_REWARDS_ADDRESS,
+        gwcToken: GWC_TOKEN_ADDRESS,
+      });
 
       // Check if contract has enough tokens
       if (contractTokenBalance.eq(0)) {
@@ -241,5 +245,55 @@ export const getTokenBalance = async (walletAddress: string) => {
   } catch (error) {
     console.error("Error getting token balance:", error);
     throw AppErrorCodes.GET_TOKEN_BALANCE_FAILED;
+  }
+};
+
+export const transferTokensToRewardsContract = async (amount: string) => {
+  try {
+    if (!process.env.EXPO_PUBLIC_ALCHEMY_API_KEY) {
+      console.error("EXPO_PUBLIC_ALCHEMY_API_KEY is not set");
+      throw AppErrorCodes.REWARD_WORKOUT_FAILED;
+    }
+
+    const provider = new ethers.providers.JsonRpcProvider(
+      `https://eth-sepolia.g.alchemy.com/v2/${process.env.EXPO_PUBLIC_ALCHEMY_API_KEY}`,
+      {
+        name: "sepolia",
+        chainId: 11155111,
+      }
+    );
+
+    if (!process.env.EXPO_PUBLIC_METAMASK_PRIVATE_KEY) {
+      console.error("EXPO_PUBLIC_METAMASK_PRIVATE_KEY is not set");
+      throw AppErrorCodes.REWARD_WORKOUT_FAILED;
+    }
+
+    const wallet = new ethers.Wallet(
+      process.env.EXPO_PUBLIC_METAMASK_PRIVATE_KEY,
+      provider
+    );
+
+    const gwcTokenContract = new ethers.Contract(
+      GWC_TOKEN_ADDRESS,
+      GWC_TOKEN_ABI,
+      wallet
+    );
+
+    console.log("Debug - Transferring tokens to WorkoutRewards contract...");
+    const tx = await gwcTokenContract.transfer(
+      WORKOUT_REWARDS_ADDRESS,
+      ethers.utils.parseEther(amount)
+    );
+    console.log("Debug - Transfer transaction sent:", tx.hash);
+    await tx.wait();
+    console.log("Debug - Transfer confirmed");
+
+    return {
+      success: true,
+      transactionHash: tx.hash,
+    };
+  } catch (error) {
+    console.error("Error transferring tokens:", error);
+    throw AppErrorCodes.REWARD_WORKOUT_FAILED;
   }
 };
