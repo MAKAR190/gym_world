@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./app/client/assets/logo.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "scheme": "gymworld",
     "splash": {
       "image": "./app/client/assets/logo.png",
@@ -45,6 +45,12 @@
       [
         "expo-build-properties",
         {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 21,
+            "buildToolsVersion": "34.0.0"
+          },
           "ios": {
             "deploymentTarget": "15.1"
           }

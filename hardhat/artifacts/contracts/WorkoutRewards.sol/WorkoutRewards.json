@@ -1,0 +1,210 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "WorkoutRewards",
+  "sourceName": "contracts/WorkoutRewards.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_gwcToken",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalReps",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalWeight",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalDistance",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "tokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "WorkoutRewarded",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "reps",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "weight",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "time",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "distance",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateReward",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "distanceRewardRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "gwcToken",
+      "outputs": [
+        {
+          "internalType": "contract GWCToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "repsRewardRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "reps",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "weight",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "time",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "distance",
+          "type": "uint256"
+        }
+      ],
+      "name": "rewardWorkout",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "timeRewardRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "weightRewardRate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080346100ac57601f6104db38819003918201601f19168301916001600160401b038311848410176100b1578084926020946040528339810103126100ac57516001600160a01b038116908190036100ac57670de0b6b3a7640000600255671bc16d674ec80000600355674563918244f40000600455678ac7230489e8000060055560018060a01b0319908160005416176000553390600154161760015560405161041390816100c88239f35b600080fd5b634e487b7160e01b600052604160045260246000fdfe608060408181526004918236101561001657600080fd5b600092833560e01c9182632b99fb7c14610336575081633e8fdd6d146101665781634dd67fe0146101475781637196d3e2146101115781638da5cb5b146100e857816390c1241d146100c9578163ba93d745146100a7575063edcea0bc1461007d57600080fd5b346100a357816003193601126100a357905490516001600160a01b039091168152602090f35b5080fd5b9050346100c557826003193601126100c55760209250549051908152f35b8280fd5b5050346100a357816003193601126100a3576020906002549051908152f35b5050346100a357816003193601126100a35760015490516001600160a01b039091168152602090f35b828434610144576080366003190112610144575061013d60209260643590604435906024359035610388565b9051908152f35b80fd5b5050346100a357816003193601126100a3576020906005549051908152f35b9050346100c55760a03660031901126100c5576001600160a01b0381358181169290839003610332576024356044356064359160843593856001541633036102fe576101b485858585610388565b9586156102bb579060208a9283541660448b518095819363a9059cbb60e01b83528d878401528c60248401525af180156102b157610239575b5050908660c096959493927f253ce5895d81ae752d6bae45374665669e37f3187b6ded164348f39f522fc02c985196875260208701528501526060840152608083015260a0820152a180f35b602097969594939297903d82116102a9575b601f8201601f191683019067ffffffffffffffff821184831017610296575060209183918b528101031261029257518015150361028e57909192939438806101ed565b8780fd5b8880fd5b634e487b7160e01b8c526041905260248bfd5b3d915061024b565b89513d8c823e3d90fd5b885162461bcd60e51b8152602081840152601a60248201527f4e6f2072657761726420666f72207468697320776f726b6f75740000000000006044820152606490fd5b606490602089519162461bcd60e51b8352820152600e60248201526d139bdd08185d5d1a1bdc9a5e995960921b6044820152fd5b8480fd5b8490346100a357816003193601126100a3576020906003548152f35b8181029291811591840414171561036557565b634e487b7160e01b600052601160045260246000fd5b9190820180921161036557565b926103d56103d592936103cf6103c16103b46103aa6103da9960025490610352565b9760035490610352565b92603c6004549104610352565b936103e86005549104610352565b9461037b565b61037b565b9056fea2646970667358221220ea4a6eaf2b3b69339d50ad08956642be894b544d8ab30f0c7738f81267c1ca8b64736f6c63430008140033",
+  "deployedBytecode": "0x608060408181526004918236101561001657600080fd5b600092833560e01c9182632b99fb7c14610336575081633e8fdd6d146101665781634dd67fe0146101475781637196d3e2146101115781638da5cb5b146100e857816390c1241d146100c9578163ba93d745146100a7575063edcea0bc1461007d57600080fd5b346100a357816003193601126100a357905490516001600160a01b039091168152602090f35b5080fd5b9050346100c557826003193601126100c55760209250549051908152f35b8280fd5b5050346100a357816003193601126100a3576020906002549051908152f35b5050346100a357816003193601126100a35760015490516001600160a01b039091168152602090f35b828434610144576080366003190112610144575061013d60209260643590604435906024359035610388565b9051908152f35b80fd5b5050346100a357816003193601126100a3576020906005549051908152f35b9050346100c55760a03660031901126100c5576001600160a01b0381358181169290839003610332576024356044356064359160843593856001541633036102fe576101b485858585610388565b9586156102bb579060208a9283541660448b518095819363a9059cbb60e01b83528d878401528c60248401525af180156102b157610239575b5050908660c096959493927f253ce5895d81ae752d6bae45374665669e37f3187b6ded164348f39f522fc02c985196875260208701528501526060840152608083015260a0820152a180f35b602097969594939297903d82116102a9575b601f8201601f191683019067ffffffffffffffff821184831017610296575060209183918b528101031261029257518015150361028e57909192939438806101ed565b8780fd5b8880fd5b634e487b7160e01b8c526041905260248bfd5b3d915061024b565b89513d8c823e3d90fd5b885162461bcd60e51b8152602081840152601a60248201527f4e6f2072657761726420666f72207468697320776f726b6f75740000000000006044820152606490fd5b606490602089519162461bcd60e51b8352820152600e60248201526d139bdd08185d5d1a1bdc9a5e995960921b6044820152fd5b8480fd5b8490346100a357816003193601126100a3576020906003548152f35b8181029291811591840414171561036557565b634e487b7160e01b600052601160045260246000fd5b9190820180921161036557565b926103d56103d592936103cf6103c16103b46103aa6103da9960025490610352565b9760035490610352565b92603c6004549104610352565b936103e86005549104610352565b9461037b565b61037b565b9056fea2646970667358221220ea4a6eaf2b3b69339d50ad08956642be894b544d8ab30f0c7738f81267c1ca8b64736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
